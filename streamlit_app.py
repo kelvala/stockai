@@ -441,11 +441,41 @@ def main():
         # AI Assistant Links
         st.header("🤖 AI Assistants")
         
-        ai_assistants = [
-            ("📈 Stock Predictor", "https://chatgpt.com/g/g-686c5fc3dd948191a0ff9c14cecda1b4-stock-predictor-prompt-gpt"),
-            ("💡 Smarter Investing", "https://chatgpt.com/g/g-687b911701a08191aadd69c345a67d17-9-prompts-for-smarter-investing"),
-            ("💰 Dividend Sniper", "https://chatgpt.com/g/g-6878fe277c5c819180211289d9e16148-high-yield-dividend-sniper")
-        ]
+        if ticker:
+            # Get company name for context
+            try:
+                temp_stock = yf.Ticker(ticker)
+                company_name = temp_stock.info.get('longName', ticker)
+            except:
+                company_name = ticker
+            
+            # Simple, reliable copy solution
+            analysis_text = f"Analyze {ticker} ({company_name}) stock ticker for smart investing decisions"
+            
+            # Display the text clearly
+            st.write(f"**Copy this text for AI Assistant:**")
+            
+            # Use a text input that's easy to copy from
+            st.text_input(
+                "📋 Select all and copy (Ctrl+A, then Ctrl+C):",
+                value=analysis_text,
+                key=f"copy_text_{ticker}",
+                help="Click in the box, select all (Ctrl+A), then copy (Ctrl+C)"
+            )
+            
+            st.info("💡 **Instructions:** Copy the text above, then click an AI Assistant button below and paste it!")
+            
+            ai_assistants = [
+                ("📈 Stock Predictor", "https://chatgpt.com/g/g-686c5fc3dd948191a0ff9c14cecda1b4-stock-predictor-prompt-gpt"),
+                ("💡 Smarter Investing", "https://chatgpt.com/g/g-687b911701a08191aadd69c345a67d17-9-prompts-for-smarter-investing"),
+                ("💰 Dividend Sniper", "https://chatgpt.com/g/g-6878fe277c5c819180211289d9e16148-high-yield-dividend-sniper")
+            ]
+        else:
+            ai_assistants = [
+                ("📈 Stock Predictor", "https://chatgpt.com/g/g-686c5fc3dd948191a0ff9c14cecda1b4-stock-predictor-prompt-gpt"),
+                ("💡 Smarter Investing", "https://chatgpt.com/g/g-687b911701a08191aadd69c345a67d17-9-prompts-for-smarter-investing"),
+                ("💰 Dividend Sniper", "https://chatgpt.com/g/g-6878fe277c5c819180211289d9e16148-high-yield-dividend-sniper")
+            ]
         
         for name, url in ai_assistants:
             st.markdown(f'''
