@@ -142,6 +142,7 @@ def get_stock_data(ticker):
 def calculate_technical_indicators(hist):
     """Calculate technical indicators"""
     # Moving averages
+    hist['SMA_9'] = hist['Close'].rolling(window=9).mean()
     hist['SMA_50'] = hist['Close'].rolling(window=50).mean()
     hist['SMA_200'] = hist['Close'].rolling(window=200).mean()
     
@@ -232,6 +233,7 @@ def get_recommendation(hist, info, current_price, intrinsic_value):
     try:
         # Get latest values
         rsi = hist['RSI'].iloc[-1]
+        sma_9 = hist['SMA_9'].iloc[-1]
         sma_50 = hist['SMA_50'].iloc[-1]
         sma_200 = hist['SMA_200'].iloc[-1]
         macd = hist['MACD'].iloc[-1]
@@ -250,6 +252,9 @@ def get_recommendation(hist, info, current_price, intrinsic_value):
             signals.append("Overbought RSI")
         
         # Moving average signals
+        if current_price > sma_9:
+            score += 0.5
+            signals.append("Above 9-day MA")
         if current_price > sma_50:
             score += 1
             signals.append("Above 50-day MA")
@@ -300,6 +305,12 @@ def create_price_chart(hist, ticker):
     ))
     
     # Add moving averages
+    fig.add_trace(go.Scatter(
+        x=hist.index, y=hist['SMA_9'],
+        line=dict(color='orange', width=1),
+        name='9-day MA'
+    ))
+    
     fig.add_trace(go.Scatter(
         x=hist.index, y=hist['SMA_50'],
         line=dict(color='blue', width=1),
