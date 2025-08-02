@@ -1482,6 +1482,29 @@ class StockAnalyzerGUI:
             macd_current = macd_line.iloc[-1]
             signal_current = signal_line.iloc[-1]
             
+            # Ichimoku Cloud calculation
+            high_9 = hist['High'].rolling(window=9).max()
+            low_9 = hist['Low'].rolling(window=9).min()
+            tenkan_sen = ((high_9 + low_9) / 2).iloc[-1]
+            
+            high_26 = hist['High'].rolling(window=26).max()
+            low_26 = hist['Low'].rolling(window=26).min()
+            kijun_sen = ((high_26 + low_26) / 2).iloc[-1]
+            
+            # Determine cloud position (current price vs cloud)
+            high_52 = hist['High'].rolling(window=52).max()
+            low_52 = hist['Low'].rolling(window=52).min()
+            senkou_span_b = ((high_52 + low_52) / 2).iloc[-27] if len(hist) > 27 else None
+            senkou_span_a = ((tenkan_sen + kijun_sen) / 2)
+            
+            # Cloud signal
+            ichimoku_signal = "NEUTRAL"
+            if senkou_span_b is not None:
+                if current_price > max(senkou_span_a, senkou_span_b):
+                    ichimoku_signal = "BULLISH"
+                elif current_price < min(senkou_span_a, senkou_span_b):
+                    ichimoku_signal = "BEARISH"
+            
             # Volume analysis
             avg_volume = hist['Volume'].mean()
             current_volume = hist['Volume'].iloc[-1]
@@ -1554,6 +1577,16 @@ class StockAnalyzerGUI:
             else:
                 formatted += f"• MACD Signal: BEARISH (MACD below signal line)\n"
             
+            formatted += f"• Ichimoku Cloud: {ichimoku_signal}\n"
+            formatted += f"• Tenkan-sen (9): ${tenkan_sen:.2f}\n"
+            formatted += f"• Kijun-sen (26): ${kijun_sen:.2f}\n"
+            if current_price > tenkan_sen and current_price > kijun_sen:
+                formatted += f"• Price above both Ichimoku lines: BULLISH\n"
+            elif current_price < tenkan_sen and current_price < kijun_sen:
+                formatted += f"• Price below both Ichimoku lines: BEARISH\n"
+            else:
+                formatted += f"• Mixed Ichimoku signals: NEUTRAL\n"
+            
             formatted += f"• 9-day MA: ${sma_9:.2f}\n"
             formatted += f"• 50-day MA: ${sma_50:.2f}\n"
             formatted += f"• 200-day MA: ${sma_200:.2f}\n"
@@ -1589,10 +1622,12 @@ class StockAnalyzerGUI:
             if current_price > sma_50: signals.append("Above 50-day MA")
             if current_price > sma_200: signals.append("Above 200-day MA")
             if macd_current > signal_current: signals.append("MACD Bullish")
+            if ichimoku_signal == "BULLISH": signals.append("Ichimoku Bullish")
+            if ichimoku_signal == "BEARISH": signals.append("Ichimoku Bearish")
             if volume_ratio > 1.5: signals.append("High Volume")
             
-            bullish_signals = sum(1 for s in signals if s in ["Oversold RSI", "Above 50-day MA", "Above 200-day MA", "MACD Bullish", "High Volume"])
-            bearish_signals = sum(1 for s in signals if s in ["Overbought RSI"])
+            bullish_signals = sum(1 for s in signals if s in ["Oversold RSI", "Above 9-day MA", "Above 50-day MA", "Above 200-day MA", "MACD Bullish", "Ichimoku Bullish", "High Volume"])
+            bearish_signals = sum(1 for s in signals if s in ["Overbought RSI", "Ichimoku Bearish"])
             
             if bullish_signals >= 3:
                 recommendation = "BUY"

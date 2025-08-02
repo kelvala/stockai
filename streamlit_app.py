@@ -165,6 +165,23 @@ def calculate_technical_indicators(hist):
     hist['BB_Upper'] = hist['BB_Middle'] + (bb_std * 2)
     hist['BB_Lower'] = hist['BB_Middle'] - (bb_std * 2)
     
+    # Ichimoku Cloud
+    high_9 = hist['High'].rolling(window=9).max()
+    low_9 = hist['Low'].rolling(window=9).min()
+    hist['Tenkan_sen'] = (high_9 + low_9) / 2
+    
+    high_26 = hist['High'].rolling(window=26).max()
+    low_26 = hist['Low'].rolling(window=26).min()
+    hist['Kijun_sen'] = (high_26 + low_26) / 2
+    
+    hist['Senkou_span_A'] = ((hist['Tenkan_sen'] + hist['Kijun_sen']) / 2).shift(26)
+    
+    high_52 = hist['High'].rolling(window=52).max()
+    low_52 = hist['Low'].rolling(window=52).min()
+    hist['Senkou_span_B'] = ((high_52 + low_52) / 2).shift(26)
+    
+    hist['Chikou_span'] = hist['Close'].shift(-26)
+    
     return hist
 
 def calculate_intrinsic_value(info, current_price):
@@ -409,6 +426,70 @@ def create_macd_chart(hist):
     
     return fig
 
+def create_ichimoku_chart(hist, ticker):
+    """Create Ichimoku Cloud chart"""
+    fig = go.Figure()
+    
+    # Get last 6 months of data for cleaner view
+    six_months_ago = hist.index[-1] - pd.Timedelta(days=180)
+    recent_hist = hist[hist.index >= six_months_ago]
+    
+    # Price line
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Close'],
+        line=dict(color='black', width=2),
+        name='Price'
+    ))
+    
+    # Tenkan-sen (Conversion Line) - Blue
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Tenkan_sen'],
+        line=dict(color='blue', width=1),
+        name='Tenkan-sen (9)'
+    ))
+    
+    # Kijun-sen (Base Line) - Red
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Kijun_sen'],
+        line=dict(color='red', width=1),
+        name='Kijun-sen (26)'
+    ))
+    
+    # Senkou Span A (Leading Span A) - Green
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Senkou_span_A'],
+        line=dict(color='green', width=1),
+        name='Senkou Span A',
+        fill=None
+    ))
+    
+    # Senkou Span B (Leading Span B) - Orange
+    # Fill between Senkou Span A and B to create the cloud
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Senkou_span_B'],
+        line=dict(color='orange', width=1),
+        name='Senkou Span B',
+        fill='tonexty',
+        fillcolor='rgba(0,255,0,0.1)'  # Light green cloud
+    ))
+    
+    # Chikou Span (Lagging Span) - Purple
+    fig.add_trace(go.Scatter(
+        x=recent_hist.index, y=recent_hist['Chikou_span'],
+        line=dict(color='purple', width=1, dash='dot'),
+        name='Chikou Span'
+    ))
+    
+    fig.update_layout(
+        title=f"{ticker} - Ichimoku Cloud (6 Months)",
+        yaxis_title="Price ($)",
+        xaxis_title="Date",
+        height=400,
+        showlegend=True
+    )
+    
+    return fig
+
 # Main Streamlit App
 def main():
     # Header
@@ -601,6 +682,10 @@ def main():
             with col2:
                 macd_chart = create_macd_chart(hist)
                 st.plotly_chart(macd_chart, use_container_width=True)
+            
+            # Ichimoku Cloud chart (full width)
+            ichimoku_chart = create_ichimoku_chart(hist, ticker)
+            st.plotly_chart(ichimoku_chart, use_container_width=True)
             
             # Analysis section
             st.header("📋 Detailed Analysis")
