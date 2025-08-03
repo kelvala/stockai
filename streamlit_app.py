@@ -262,6 +262,22 @@ def search_stocks(query, stock_data, max_results=10):
             'match_type': 'exact_ticker'
         })
     
+    # Company name exact word matches (e.g., "APPLE" should find "Apple Inc")
+    if len(results) < max_results:
+        company_exact_word = stock_data[
+            (stock_data['company_name'].str.upper().str.contains(r'\b' + query + r'\b', na=False, regex=True)) &
+            (~stock_data['ticker'].str.upper().isin([r['ticker'].upper() for r in results]))
+        ]
+        for _, row in company_exact_word.iterrows():
+            if len(results) >= max_results:
+                break
+            results.append({
+                'display': f"{row['ticker']} - {row['company_name']}",
+                'ticker': row['ticker'],
+                'company': row['company_name'],
+                'match_type': 'company_exact_word'
+            })
+    
     # Ticker starts with query
     if len(results) < max_results:
         ticker_starts = stock_data[
@@ -748,6 +764,8 @@ def main():
                             # Color coding based on match type
                             if suggestion['match_type'] == 'exact_ticker':
                                 st.markdown(f"🎯 **{display_text}**")
+                            elif suggestion['match_type'] == 'company_exact_word':
+                                st.markdown(f"🎯 **{suggestion['ticker']}** - {suggestion['company'][:30]}...")
                             elif suggestion['match_type'] == 'ticker_starts':
                                 st.markdown(f"📈 **{suggestion['ticker']}** - {suggestion['company'][:25]}...")
                             else:
@@ -763,11 +781,22 @@ def main():
                                     st.session_state.show_suggestions = False
                                     ticker = cleaned_ticker
                                     st.rerun()
+                    
+                    # Auto-select first suggestion if it's an exact match and user pressed Enter
+                    if suggestions and suggestions[0]['match_type'] in ['exact_ticker', 'company_exact_word']:
+                        if st.button(f"✅ Analyze {suggestions[0]['ticker']}", key="auto_select", use_container_width=True, type="primary"):
+                            cleaned_ticker = clean_ticker(suggestions[0]['ticker'])
+                            if validate_ticker(cleaned_ticker):
+                                st.session_state.selected_ticker = cleaned_ticker
+                                st.session_state.search_query = cleaned_ticker
+                                st.session_state.show_suggestions = False
+                                ticker = cleaned_ticker
+                                st.rerun()
             else:
-                # No suggestions found, but check if it's a valid ticker
+                # No suggestions found - check if user entered something that looks like a ticker
                 cleaned_search = clean_ticker(search_input)
                 if len(cleaned_search) > 0 and validate_ticker(cleaned_search):
-                    st.info(f"🎯 **{cleaned_search}** - Press Enter to analyze this ticker")
+                    st.info(f"🎯 **{cleaned_search}** - Press button to analyze")
                     if st.button(f"Analyze {cleaned_search}", use_container_width=True):
                         st.session_state.selected_ticker = cleaned_search
                         st.session_state.search_query = cleaned_search
@@ -775,7 +804,12 @@ def main():
                         ticker = cleaned_search
                         st.rerun()
                 elif len(search_input) > 2:
-                    st.warning("No matches found. Try searching by ticker symbol or company name.")
+                    st.warning("No matches found. Try:")
+                    st.markdown("""
+                    - **Ticker symbols**: AAPL, MSFT, GOOGL
+                    - **Company names**: Apple, Microsoft, Google
+                    - **Partial names**: bank, tech, energy
+                    """)
         
         # Display current selection
         if ticker and ticker != "":
