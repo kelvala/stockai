@@ -1,0 +1,3 @@
+([('StockAnalyzer',
+   '/Users/sunsetf4/GPT-Stock-Analyzer/dist/StockAnalyzer',
+   'EXECUTABLE')],)

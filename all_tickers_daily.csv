@@ -1,0 +1,709 @@
+ticker,company_name
+A,A Corporation
+AA,AA Corporation
+AAL,AAL Corporation
+AAPL,AAPL Corp
+AAXJ,AAXJ Corporation
+AB,AB Corporation
+ABBV,ABBV Inc
+ABC,ABC Corporation
+ABMD,ABMD Corporation
+ABNB,Airbnb Inc
+ABT,ABT Inc
+ACN,ACN Inc
+ADBE,ADBE Corp
+ADI,ADI Corp
+ADM,ADM Corporation
+ADP,ADP Corp
+ADSK,ADSK Corp
+AEE,AEE Corporation
+AEM,Agnico Eagle Mines Limited
+AEO,American Eagle Outfitters Inc
+AEP,AEP Corporation
+AES,AES Corporation
+AFL,AFL Corporation
+AFRM,Affirm Holdings Inc
+AG,First Majestic Silver Corp
+AIG,AIG Inc
+AIZ,AIZ Corporation
+AJG,AJG Corporation
+AKAM,AKAM Corporation
+ALB,ALB Corporation
+ALB,Albemarle Corp
+ALGN,ALGN Corporation
+ALK,ALK Corporation
+ALL,ALL Corporation
+ALLE,ALLE Corporation
+AMAT,AMAT Corp
+AMC,AMC Entertainment Holdings Inc
+AMD,AMD Corp
+AME,AME Corporation
+AMGN,AMGN Corp
+AMP,AMP Corporation
+AMT,AMT Corporation
+AMZN,AMZN Corp
+AN,AN Corporation
+ANET,ANET Corporation
+ANF,Abercrombie & Fitch Co
+ANSS,ANSS Corporation
+ANTM,Anthem Inc
+ANY,Sphere 3D Corp
+AON,AON Inc
+AOS,AOS Corporation
+APA,APA Corporation
+APD,APD Inc
+APH,APH Corporation
+APTV,APTV Corporation
+ARBK,Argo Blockchain plc
+ARE,ARE Corporation
+ARKF,ARK Fintech Innovation ETF
+ARKG,ARK Genomics Revolution ETF
+ARKK,ARK Innovation ETF
+ARKQ,ARK Autonomous Technology & Robotics ETF
+ARKW,ARK Next Generation Internet ETF
+ARVL,Arrival
+ASML,ASML Corp
+ATO,ATO Corporation
+ATVI,ATVI Corp
+AVB,AvalonBay Communities Inc
+AVGO,AVGO Corp
+AVY,AVY Corporation
+AWK,AWK Corporation
+AXP,AXP Inc
+AZO,AZO Corporation
+B,Barnes Group Inc
+BA,BA Corporation
+BABA,Alibaba Group Holding Ltd
+BAC,BAC Inc
+BATT,Amplify Lithium & Battery Technology ETF
+BAX,BAX Corporation
+BB,BlackBerry Ltd
+BBY,BBY Corporation
+BDX,BDX Inc
+BE,Bloom Energy Corp
+BEN,BEN Corporation
+BEP,Brookfield Renewable Partners LP
+BF-B,BF-B Corporation
+BIIB,BIIB Corporation
+BITF,Bitfarms Ltd
+BITI,ProShares Short Bitcoin Strategy ETF
+BITO,ProShares Bitcoin Strategy ETF
+BK,BK Inc
+BKKT,Bakkt Holdings Inc
+BKNG,BKNG Corp
+BKR,BKR Corporation
+BLDP,Ballard Power Systems Inc
+BLK,BLK Inc
+BLL,BLL Corporation
+BMY,BMY Inc
+BND,Vanguard Total Bond Market ETF
+BNTX,BioNTech SE
+BR,BR Corporation
+BRK-A,BRK-A Corporation
+BRK-B,BRK-B Corporation
+BRK.A,Berkshire Hathaway Inc Class A
+BRK.B,Berkshire Hathaway Inc Class B
+BSX,BSX Inc
+BTBT,Bit Digital Inc
+BTCS,BTCS Inc
+BWA,BWA Corporation
+C,C Inc
+CAG,CAG Corporation
+CAH,CAH Corporation
+CAN,Canaan Inc
+CARR,CARR Corporation
+CAT,CAT Inc
+CB,CB Inc
+CBOE,CBOE Corporation
+CBRE,CBRE Corporation
+CCI,Crown Castle Inc
+CCJ,Cameco Corp
+CCL,CCL Corporation
+CDE,Coeur Mining Inc
+CDNS,CDNS Corp
+CDW,CDW Corporation
+CE,CE Corporation
+CERN,CERN Corporation
+CF,CF Corporation
+CFG,CFG Corporation
+CHD,CHD Corporation
+CHRW,CHRW Corporation
+CHTR,CHTR Corp
+CI,CI Inc
+CIFR,Cipher Mining Inc
+CINF,CINF Corporation
+CL,CL Inc
+CLOV,Clover Health Investments Corp
+CLSK,CleanSpark Inc
+CLX,CLX Corporation
+CMA,CMA Corporation
+CMCSA,CMCSA Corp
+CME,CME Inc
+CMG,CMG Corporation
+CMI,CMI Corporation
+CMS,CMS Corporation
+CNC,CNC Corporation
+CNP,CNP Corporation
+COF,COF Inc
+COG,COG Corporation
+COIN,Coinbase Global Inc
+COO,COO Corporation
+COP,COP Inc
+CORZ,Core Scientific Inc
+COST,COST Corp
+CPB,CPB Corporation
+CPRT,CPRT Corporation
+CRM,CRM Corp
+CRWD,CrowdStrike Holdings Inc
+CSCO,CSCO Corporation
+CSX,CSX Corp
+CTAS,CTAS Corporation
+CTL,CTL Corporation
+CTSH,CTSH Corporation
+CTVA,CTVA Corporation
+CTXS,CTXS Corporation
+CVS,CVS Inc
+CVX,CVX Inc
+CWEN,Clearway Energy Inc
+CXO,CXO Corporation
+D,D Corporation
+DAL,DAL Inc
+DD,DD Corporation
+DDOG,Datadog Inc
+DE,DE Inc
+DFS,DFS Corporation
+DG,DG Inc
+DGHI,Digihost Technology Inc
+DGX,DGX Corporation
+DHI,DHI Corporation
+DHR,DHR Inc
+DIS,DIS Inc
+DISCA,DISCA Corporation
+DISCK,DISCK Corporation
+DISH,DISH Corporation
+DLR,Digital Realty Trust Inc
+DLTR,DLTR Corporation
+DNN,Denison Mines Corp
+DOCU,DocuSign Inc
+DOV,DOV Corporation
+DOW,DOW Corporation
+DPZ,DPZ Corporation
+DRE,DRE Corporation
+DRI,DRI Corporation
+DRIV,Global X Autonomous & Electric Vehicles ETF
+DTE,DTE Corporation
+DUK,DUK Inc
+DVA,DVA Corporation
+DVN,Devon Energy Corp
+DXC,DXC Corporation
+DXCM,DXCM Corp
+E,Eni S.p.A.
+EA,EA Corporation
+EBANG,Ebang International Holdings Inc
+EBAY,EBAY Corporation
+EBON,Ebang International Holdings Inc
+ECL,ECL Corporation
+ED,ED Corporation
+EEM,iShares MSCI Emerging Markets ETF
+EFA,iShares MSCI EAFE ETF
+EFX,EFX Corporation
+EIX,EIX Corporation
+EL,EL Corporation
+EMN,EMN Corporation
+EMR,EMR Inc
+ENPH,ENPH Corporation
+ENPH,Enphase Energy Inc
+EOG,EOG Resources Inc
+EPD,Enterprise Products Partners LP
+EQIX,EQIX Inc
+EQR,Equity Residential
+ES,ES Corporation
+ESS,ESS Corporation
+ET,Energy Transfer LP
+ETFC,ETFC Corporation
+ETHE,Grayscale Ethereum Trust
+ETN,ETN Corporation
+ETR,ETR Corporation
+EVRG,EVRG Corporation
+EW,EW Corporation
+EWJ,iShares MSCI Japan ETF
+EXC,EXC Corporation
+EXK,Endeavour Silver Corp
+EXPD,EXPD Corporation
+EXPE,EXPE Corporation
+EXR,EXR Corporation
+F,F Inc
+FANG,Diamondback Energy Inc
+FAST,FAST Corporation
+FB,FB Corporation
+FBHS,FBHS Corporation
+FCEL,FuelCell Energy Inc
+FCX,FCX Inc
+FDX,FDX Corporation
+FE,FE Corporation
+FFIV,FFIV Corporation
+FIND,Fisker Inc
+FIS,FIS Inc
+FISV,FISV Corp
+FITB,FITB Corporation
+FLT,FLT Corporation
+FMC,FMC Corporation
+FMC,FMC Corp
+FOX,FOX Corporation
+FOXA,FOXA Corporation
+FRC,FRC Corporation
+FRT,FRT Corporation
+FSLR,First Solar Inc
+FTFT,Future FinTech Group Inc
+FTI,FTI Corporation
+FTNT,FTNT Corporation
+FTV,FTV Corporation
+FXI,iShares China Large-Cap ETF
+G,Genpact Limited
+GBTC,Grayscale Bitcoin Trust
+GD,GD Inc
+GDX,VanEck Gold Miners ETF
+GDXJ,VanEck Junior Gold Miners ETF
+GE,GE Inc
+GEVO,Gevo Inc
+GILD,GILD Corp
+GIS,GIS Corporation
+GL,GL Corporation
+GLD,SPDR Gold Shares
+GLW,GLW Corporation
+GM,GM Inc
+GME,GameStop Corp
+GOLD,Barrick Gold Corporation
+GOOG,GOOG Corp
+GOOGL,GOOGL Corp
+GPC,GPC Corporation
+GPN,GPN Corporation
+GPS,GPS Corporation
+GREE,Greenidge Generation Holdings Inc
+GRID,First Trust NASDAQ Clean Edge Smart Grid Infrastructure Index Fund
+GRMN,GRMN Corporation
+GS,GS Inc
+GWW,GWW Corporation
+H,Hyatt Hotels Corporation
+HA,Hawaiian Holdings Inc
+HAL,HAL Corporation
+HAS,HAS Corporation
+HBAN,HBAN Corporation
+HBI,HBI Corporation
+HCA,HCA Corporation
+HD,HD Inc
+HES,Hess Corp
+HFC,HFC Corporation
+HIG,HIG Corporation
+HII,HII Corporation
+HL,Hecla Mining Company
+HLT,HLT Corporation
+HOLX,HOLX Corporation
+HON,HON Inc
+HOOD,Robinhood Markets Inc
+HPE,HPE Corporation
+HPQ,HPQ Corporation
+HRB,HRB Corporation
+HRL,HRL Corporation
+HSIC,HSIC Corporation
+HST,HST Corporation
+HSY,HSY Corporation
+HUM,HUM Corporation
+HUT,Hut 8 Mining Corp
+HWM,HWM Corporation
+HYG,iShares iBoxx $ High Yield Corporate Bond ETF
+I,Intelsat S.A.
+IAG,Iamgold Corporation
+IBM,IBM Inc
+ICE,ICE Inc
+IDXX,IDXX Corporation
+IEX,IEX Corporation
+IFF,IFF Corporation
+ILIT,iShares Lithium Miners and Producers ETF
+ILMN,ILMN Corporation
+INCY,INCY Corporation
+INFO,INFO Corporation
+INTC,INTC Corp
+INTU,INTU Corp
+IP,IP Corporation
+IPG,IPG Corporation
+IPGP,IPGP Corporation
+IQV,IQV Corporation
+IR,IR Corporation
+IREN,Iris Energy Limited
+IRM,IRM Corporation
+ISRG,ISRG Corp
+IT,IT Corporation
+ITW,ITW Inc
+IVZ,IVZ Corporation
+IWM,iShares Russell 2000 ETF
+J,Jacobs Engineering Group Inc
+JBHT,JBHT Corporation
+JBLU,JetBlue Airways Corporation
+JCI,JCI Corporation
+JD,JD.com Inc
+JKHY,JKHY Corporation
+JNJ,JNJ Inc
+JNPR,JNPR Corporation
+JOY,Komatsu Ltd
+JPM,JPM Inc
+JWN,Nordstrom Inc
+K,K Corporation
+KBAT,KraneShares Battery Metals & Technology ETF
+KEY,KEY Corporation
+KEYS,KEYS Corporation
+KGC,Kinross Gold Corporation
+KHC,KHC Corporation
+KIM,KIM Corporation
+KLAC,KLAC Corp
+KMB,KMB Corporation
+KMI,Kinder Morgan Inc
+KMX,KMX Corporation
+KO,KO Inc
+KR,KR Corporation
+KSS,KSS Corporation
+KSU,KSU Corporation
+L,L Corporation
+LAC,Lithium Americas Corp
+LB,LB Corporation
+LCID,Lucid Group Inc
+LDOS,LDOS Corporation
+LEG,LEG Corporation
+LEN,LEN Corporation
+LEU,Centrus Energy Corp
+LH,LH Corporation
+LHX,LHX Corporation
+LI,Li Auto Inc
+LIACF,Lithium Ionic Corp
+LILIF,Lithium Chile Inc
+LIN,LIN Inc
+LIT,Global X Lithium & Battery Tech ETF
+LKQ,LKQ Corporation
+LLY,LLY Inc
+LMT,LMT Corporation
+LNC,LNC Corporation
+LNT,LNT Corporation
+LOW,LOW Inc
+LQD,iShares iBoxx $ Investment Grade Corporate Bond ETF
+LRCX,LRCX Corp
+LTBR,Lightbridge Corp
+LTHM,Livent Corp
+LULU,Lululemon Athletica Inc
+LUV,LUV Corporation
+LVS,LVS Corporation
+LW,LW Corporation
+LYB,LYB Corporation
+LYFT,Lyft Inc
+LYNAS,Lynas Rare Earths Limited
+LYV,LYV Corporation
+M,Macy's Inc
+MA,MA Inc
+MAA,MAA Corporation
+MAR,MAR Corporation
+MARA,Marathon Digital Holdings Inc
+MAS,MAS Corporation
+MCD,MCD Corporation
+MCHP,MCHP Corporation
+MCK,MCK Corporation
+MCO,MCO Corporation
+MDLZ,MDLZ Corp
+MDT,MDT Corporation
+MET,MET Corporation
+META,META Corp
+MGM,MGM Corporation
+MHK,MHK Corporation
+MKC,MKC Corporation
+MKTX,MKTX Corporation
+MLM,MLM Corporation
+MMC,MMC Inc
+MMM,MMM Corporation
+MNST,MNST Corporation
+MO,MO Inc
+MOGO,Mogo Inc
+MOS,MOS Corporation
+MP,MP Materials Corp
+MPC,Marathon Petroleum Corp
+MPLX,MPLX LP
+MRK,MRK Inc
+MRNA,Moderna Inc
+MRO,MRO Corporation
+MRVL,MRVL Corp
+MS,MS Corporation
+MSCI,MSCI Corporation
+MSFT,MSFT Corp
+MSI,MSI Inc
+MSTR,MicroStrategy Inc
+MTB,MTB Corporation
+MTD,MTD Corporation
+MU,MU Corp
+MXIM,MXIM Corporation
+N,NetSuite Inc
+NCLH,NCLH Corporation
+NDAQ,NDAQ Corporation
+NEE,NEE Inc
+NEE,NextEra Energy Inc
+NEM,NEM Corporation
+NET,Cloudflare Inc
+NFLX,NFLX Corp
+NI,NI Corporation
+NILE,BitNile Holdings Inc
+NIO,NIO Inc
+NKE,NKE Inc
+NKLA,Nikola Corporation
+NLOK,NLOK Corporation
+NLSN,NLSN Corporation
+NOC,NOC Corporation
+NOK,Nokia Corp
+NOW,NOW Corporation
+NRG,NRG Corporation
+NSC,NSC Inc
+NTAP,NTAP Corporation
+NTRS,NTRS Corporation
+NUE,NUE Corporation
+NVDA,NVDA Corp
+NVR,NVR Corporation
+NWL,NWL Corporation
+NWS,NWS Corporation
+NWSA,NWSA Corporation
+NXE,NexGen Energy Ltd
+NXPI,NXPI Corp
+O,Realty Income Corp
+ODFL,ODFL Corporation
+OKE,ONEOK Inc
+OKLO,Oklo Inc
+OKTA,Okta Inc
+OMC,OMC Corporation
+OPEN,Opendoor Technologies Inc
+ORCL,ORCL Inc
+ORLY,ORLY Corp
+OTIS,OTIS Corporation
+OXY,OXY Corporation
+P,Pandora Media Inc
+PAAS,Pan American Silver Corp
+PALAF,Paladin Energy Ltd
+PARA,Paramount Global
+PATH,UiPath Inc
+PAYX,PAYX Corporation
+PBCT,PBCT Corporation
+PCAR,PCAR Corporation
+PEAK,PEAK Corporation
+PEG,PEG Corporation
+PELL,Piedmont Lithium Inc
+PEP,PEP Corp
+PFE,PFE Inc
+PFG,PFG Corporation
+PG,PG Inc
+PGR,PGR Corporation
+PH,PH Corporation
+PHM,PHM Corporation
+PINS,Pinterest Inc
+PKG,PKG Corporation
+PKI,PKI Corporation
+PLD,PLD Inc
+PLTR,Palantir Technologies Inc
+PLUG,Plug Power Inc
+PM,PM Inc
+PNC,PNC Inc
+PNR,PNR Corporation
+PNW,PNW Corporation
+PPG,PPG Corporation
+PPL,PPL Corporation
+PRGO,PRGO Corporation
+PRU,PRU Corporation
+PSA,PSA Inc
+PSX,Phillips 66
+PVH,PVH Corporation
+PWR,PWR Corporation
+PXD,Pioneer Natural Resources Co
+PYPL,PYPL Corp
+Q,Quintiles IMS Holdings Inc
+QCOM,QCOM Corp
+QQQ,Invesco QQQ Trust
+QRVO,QRVO Corporation
+QS,QuantumScape Corporation
+R,Ryder System Inc
+RBLX,Roblox Corporation
+RCL,RCL Corporation
+RE,RE Corporation
+REE,Rare Element Resources Ltd
+REG,REG Corporation
+REGN,REGN Corp
+REMX,VanEck Rare Earth/Strategic Metals ETF
+RF,RF Corporation
+RHI,RHI Corporation
+RIOT,Riot Platforms Inc
+RIVN,Rivian Automotive Inc
+RJF,RJF Corporation
+RL,RL Corporation
+RMD,RMD Corporation
+ROK,ROK Corporation
+ROKU,Roku Inc
+ROL,ROL Corporation
+ROP,ROP Corporation
+ROST,ROST Corporation
+RSG,RSG Corporation
+RTX,RTX Inc
+RUN,Sunrun Inc
+S,Sprint Corporation
+SAVE,Spirit Airlines Inc
+SBAC,SBAC Corporation
+SBUX,SBUX Corp
+SCHW,SCHW Inc
+SEDG,SolarEdge Technologies Inc
+SEDG,SolarEdge Technologies Inc
+SEE,SEE Corporation
+SGML,Sigma Lithium Corporation
+SHOP,Shopify Inc
+SHW,SHW Inc
+SI,Silvergate Capital Corp
+SIVB,SIVB Corporation
+SJM,SJM Corporation
+SKYW,SkyWest Inc
+SLB,SLB Inc
+SLG,SLG Corporation
+SLV,iShares Silver Trust
+SNA,SNA Corporation
+SNAP,Snap Inc
+SNOW,SNOW Inc
+SNPS,SNPS Corp
+SO,SO Inc
+SOFI,SoFi Technologies Inc
+SOS,SOS Limited
+SPCE,Virgin Galactic Holdings Inc
+SPG,SPG Inc
+SPGI,SPGI Inc
+SPLK,Splunk Inc
+SPOT,Spotify Technology SA
+SPWR,SunPower Corporation
+SPWR,SunPower Corp
+SPY,SPDR S&P 500 ETF Trust
+SQ,SQ Inc
+SQM,Sociedad Quimica y Minera de Chile SA
+SRE,SRE Corporation
+SRUUF,Sprott Physical Uranium Trust
+STE,STE Corporation
+STT,STT Corporation
+STX,STX Corporation
+STZ,STZ Corporation
+SWK,SWK Corporation
+SWKS,SWKS Corporation
+SYF,SYF Corporation
+SYK,SYK Inc
+SYY,SYY Corporation
+T,AT&T Inc
+TAP,TAP Corporation
+TDG,TDG Corporation
+TDY,TDY Corporation
+TEAM,TEAM Corp
+TEL,TEL Corporation
+TER,TER Corporation
+TEX,Terex Corporation
+TFC,TFC Inc
+TFX,TFX Corporation
+TGT,TGT Inc
+TIF,TIF Corporation
+TJX,TJX Inc
+TLT,iShares 20+ Year Treasury Bond ETF
+TMO,TMO Inc
+TMUS,T-Mobile US Inc
+TPG,TPG Corporation
+TPR,TPR Corporation
+TRIP,TRIP Corporation
+TROW,TROW Corporation
+TRV,TRV Corporation
+TSCO,TSCO Corporation
+TSLA,TSLA Corp
+TSM,Taiwan Semiconductor Manufacturing Company
+TSN,TSN Corporation
+TT,TT Corporation
+TTWO,TTWO Corporation
+TWLO,Twilio Inc
+TWTR,TWTR Corporation
+TXN,TXN Corp
+TXT,TXT Corporation
+TYL,TYL Corporation
+U,Unity Software Inc
+UA,UA Corporation
+UAA,UAA Corporation
+UAL,UAL Corporation
+UBER,UBER Inc
+UDR,UDR Corporation
+UEC,Uranium Energy Corp
+UHS,UHS Corporation
+ULTA,ULTA Corporation
+UNG,"United States Natural Gas Fund, LP"
+UNH,UNH Inc
+UNM,UNM Corporation
+UNP,UNP Inc
+UPS,UPS Corporation
+UPST,Upstart Holdings Inc
+URA,Global X Uranium ETF
+URG,Ur-Energy Inc
+URI,URI Corporation
+URNJ,Sprott Junior Uranium Miners ETF
+URNM,North Shore Global Uranium Mining ETF
+UROY,Uranium Royalty Corp
+USB,USB Inc
+USO,"United States Oil Fund, LP"
+UTX,UTX Corporation
+UUUU,Energy Fuels Inc
+V,V Inc
+VAL,Valaris Limited
+VAR,VAR Corporation
+VEA,Vanguard FTSE Developed Markets ETF
+VFC,VFC Corporation
+VIAC,VIAC Corporation
+VLO,Valero Energy Corp
+VMC,VMC Corporation
+VNO,VNO Corporation
+VOO,Vanguard S&P 500 ETF
+VRSK,VRSK Corporation
+VRSN,VRSN Corporation
+VRTX,VRTX Corp
+VTI,Vanguard Total Stock Market ETF
+VTR,VTR Corporation
+VWO,Vanguard FTSE Emerging Markets ETF
+VZ,VZ Inc
+W,W Corporation
+WAB,WAB Corporation
+WAT,WAT Corporation
+WBA,WBA Corporation
+WBD,Warner Bros Discovery Inc
+WDAY,WDAY Corp
+WDC,WDC Corporation
+WEC,WEC Corporation
+WELL,WELL Inc
+WFC,WFC Inc
+WHR,WHR Corporation
+WISH,ContextLogic Inc
+WLTW,WLTW Corporation
+WM,WM Inc
+WMB,Williams Companies Inc
+WMT,WMT Inc
+WORK,Slack Technologies Inc
+WRB,WRB Corporation
+WRK,WRK Corporation
+WST,WST Corporation
+WU,WU Corporation
+WULF,TeraWulf Inc
+WY,WY Corporation
+WYNN,WYNN Corporation
+X,United States Steel Corporation
+XEL,XEL Corporation
+XLE,The Energy Select Sector SPDR Fund
+XLF,The Financial Select Sector SPDR Fund
+XLK,The Technology Select Sector SPDR Fund
+XLNX,XLNX Corporation
+XOM,XOM Inc
+XPEV,XPeng Inc
+XRAY,XRAY Corporation
+XRX,XRX Corporation
+XYL,XYL Corporation
+Y,Alleghany Corporation
+YUM,YUM Corporation
+Z,Zillow Group Inc
+ZBH,ZBH Corporation
+ZION,ZION Corporation
+ZM,ZM Corporation
+ZS,Zscaler Inc
+ZTS,ZTS Inc

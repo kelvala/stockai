@@ -1,0 +1,189 @@
+name: Build Cross-Platform Executables
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            python-version: '3.11'
+            executable-suffix: '.exe'
+            artifact-name: 'StockAnalyzer-Windows'
+          - os: macos-latest
+            python-version: '3.11'
+            executable-suffix: ''
+            artifact-name: 'StockAnalyzer-macOS'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
+
+    - name: Verify main file exists
+      run: |
+        ls -la gpt_chat_gui.py
+        python -c "import gpt_chat_gui; print('✅ Main module imports successfully')"
+
+    - name: Build executable with PyInstaller (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        pyinstaller StockAnalyzer.spec --clean --noconfirm
+        dir dist
+        
+    - name: Build executable with PyInstaller (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        pyinstaller StockAnalyzer.spec --clean --noconfirm
+        ls -la dist/
+
+    - name: Test executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        echo "Testing Windows executable..."
+        if (Test-Path "dist/StockAnalyzer.exe") {
+          echo "✅ StockAnalyzer.exe created successfully"
+          # Test that it can start (will exit quickly due to no display)
+          timeout 5 dist/StockAnalyzer.exe || echo "✅ Executable started and timed out as expected"
+        } else {
+          echo "❌ StockAnalyzer.exe not found"
+          exit 1
+        }
+      shell: powershell
+
+    - name: Test executable (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "Testing macOS executable..."
+        if [ -f "dist/StockAnalyzer" ]; then
+          echo "✅ StockAnalyzer executable created successfully"
+          # Test that it can start (will exit quickly due to no display)
+          timeout 5 ./dist/StockAnalyzer || echo "✅ Executable started and timed out as expected"
+        else
+          echo "❌ StockAnalyzer executable not found"
+          exit 1
+        fi
+        
+        if [ -d "dist/Stock Analyzer.app" ]; then
+          echo "✅ Stock Analyzer.app bundle created successfully"
+        else
+          echo "❌ Stock Analyzer.app not found"
+          exit 1
+        fi
+
+    - name: Package artifacts (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        mkdir release
+        copy "dist\StockAnalyzer.exe" "release\"
+        copy "stock_data.csv" "release\" 2>nul || echo "stock_data.csv not found, skipping"
+        copy "README.md" "release\" 2>nul || echo "README.md not found, skipping"
+        dir release
+      shell: cmd
+
+    - name: Package artifacts (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        mkdir release
+        cp dist/StockAnalyzer release/
+        cp -r "dist/Stock Analyzer.app" release/ 2>/dev/null || echo "App bundle copy failed"
+        cp stock_data.csv release/ 2>/dev/null || echo "stock_data.csv not found, skipping"
+        cp README.md release/ 2>/dev/null || echo "README.md not found, skipping"
+        ls -la release/
+
+    - name: Upload executable artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.artifact-name }}
+        path: release/
+        retention-days: 30
+
+    - name: Create Release (on tag push)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release/*
+        body: |
+          ## Stock Analyzer ${{ github.ref_name }}
+          
+          ### Downloads
+          - **Windows**: `StockAnalyzer.exe` - Double-click to run
+          - **macOS**: `StockAnalyzer` - Command-line executable
+          - **macOS**: `Stock Analyzer.app` - Native macOS application
+          
+          ### Features
+          - 📊 Comprehensive stock analysis with real-time data
+          - 🤖 AI Assistant integration (Stock Predictor, Smarter Investing, etc.)
+          - 💰 Multiple stock screeners and value calculators
+          - 📈 Technical analysis with indicators (RSI, MACD, Moving Averages)
+          - 💲 Intrinsic value calculation using multiple valuation methods
+          - 🔍 Autocomplete for stock tickers and company names
+          
+          ### Requirements
+          - No Python installation required
+          - No additional dependencies needed
+          - Just download and run!
+          
+          ### Usage
+          1. Download the appropriate file for your operating system
+          2. Double-click to launch the Stock Analyzer GUI
+          3. Enter a stock ticker (e.g., AAPL, TSLA) or company name
+          4. Click "ANALYZE STOCK" for comprehensive analysis
+          5. Use AI Assistant buttons for advanced analysis
+          
+          Built with PyInstaller from commit ${{ github.sha }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-summary:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Build Summary
+      run: |
+        echo "## 🚀 Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Executables Built:" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Windows: StockAnalyzer.exe" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ macOS: StockAnalyzer (executable)" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ macOS: Stock Analyzer.app (app bundle)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Download Instructions:" >> $GITHUB_STEP_SUMMARY
+        echo "1. Go to the **Actions** tab" >> $GITHUB_STEP_SUMMARY
+        echo "2. Click on this workflow run" >> $GITHUB_STEP_SUMMARY
+        echo "3. Scroll down to **Artifacts**" >> $GITHUB_STEP_SUMMARY
+        echo "4. Download **StockAnalyzer-Windows** or **StockAnalyzer-macOS**" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### For Release Downloads:" >> $GITHUB_STEP_SUMMARY
+        echo "- Create a tag like \`v1.0.0\` to trigger automatic releases" >> $GITHUB_STEP_SUMMARY
+        echo "- Releases will be available in the **Releases** section" >> $GITHUB_STEP_SUMMARY

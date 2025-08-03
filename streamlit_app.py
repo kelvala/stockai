@@ -81,8 +81,104 @@ st.markdown("""
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+    
+    /* Finviz-style search suggestions */
+    .search-suggestion {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 4px;
+        padding: 0.5rem;
+        margin: 0.2rem 0;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .search-suggestion:hover {
+        background: #e9ecef;
+        border-color: #0066cc;
+        transform: translateX(2px);
+    }
+    .suggestion-ticker {
+        font-weight: bold;
+        color: #0066cc;
+    }
+    .suggestion-company {
+        color: #666;
+        font-size: 0.9em;
+    }
+    
+    /* Search input styling */
+    .stTextInput > div > div > input {
+        background-color: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+    .stTextInput > div > div > input:focus {
+        border-color: #0066cc;
+        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        background-color: white;
+    }
 </style>
 """, unsafe_allow_html=True)
+
+def clean_ticker(ticker_input):
+    """
+    Clean and validate ticker input
+    - Remove spaces and extra whitespace
+    - Convert to uppercase
+    - Remove invalid characters
+    - Handle common ticker formats (class shares, etc.)
+    """
+    if not ticker_input:
+        return ""
+    
+    # Remove all whitespace and convert to uppercase
+    cleaned = re.sub(r'\s+', '', str(ticker_input).upper())
+    
+    # Remove any characters that aren't letters, numbers, dots, or hyphens
+    cleaned = re.sub(r'[^A-Z0-9.-]', '', cleaned)
+    
+    # Handle common ticker formats
+    # Remove leading/trailing dots or hyphens
+    cleaned = cleaned.strip('.-')
+    
+    # If ticker starts with numbers, it's likely invalid - return empty
+    if cleaned and cleaned[0].isdigit():
+        return ""
+    
+    # Validate length (most tickers are 1-5 characters, some with class designations can be longer)
+    if len(cleaned) > 10:
+        cleaned = cleaned[:10]
+    
+    return cleaned
+
+def validate_ticker(ticker):
+    """
+    Basic ticker validation
+    Returns True if ticker appears to be in valid format
+    """
+    if not ticker:
+        return False
+    
+    # Basic format check: 1-10 characters, letters/numbers/dots/hyphens only
+    if not re.match(r'^[A-Z0-9.-]+$', ticker):
+        return False
+    
+    # Must start with a letter
+    if not ticker[0].isalpha():
+        return False
+    
+    # Length check - be more conservative with very long tickers
+    if len(ticker) < 1 or len(ticker) > 8:
+        return False
+    
+    # Additional validation: shouldn't be all numbers after the first letter
+    if len(ticker) > 1 and ticker[1:].isdigit() and len(ticker) > 5:
+        return False
+    
+    return True
 
 @st.cache_data(ttl=3600)  # Cache for 1 hour
 def load_stock_data():
@@ -99,8 +195,10 @@ def load_stock_data():
             ['GOOGL', 'Alphabet Inc Class A'],
             ['AMZN', 'Amazon.com Inc'],
             ['TSLA', 'Tesla Inc'],
-            ['META', 'Meta Platforms Inc'],
             ['NVDA', 'NVIDIA Corporation'],
+            ['META', 'Meta Platforms Inc'],
+            ['BRK.A', 'Berkshire Hathaway Inc Class A'],
+            ['BRK.B', 'Berkshire Hathaway Inc Class B'],
             ['JPM', 'JPMorgan Chase & Co'],
             ['JNJ', 'Johnson & Johnson'],
             ['V', 'Visa Inc'],
@@ -108,14 +206,111 @@ def load_stock_data():
             ['UNH', 'UnitedHealth Group Inc'],
             ['HD', 'Home Depot Inc'],
             ['MA', 'Mastercard Inc'],
-            ['DIS', 'Walt Disney Co'],
             ['BAC', 'Bank of America Corp'],
-            ['XOM', 'Exxon Mobil Corporation'],
+            ['ABBV', 'AbbVie Inc'],
+            ['AVGO', 'Broadcom Inc'],
+            ['XOM', 'Exxon Mobil Corp'],
             ['WMT', 'Walmart Inc'],
-            ['CVX', 'Chevron Corporation'],
-            ['LLY', 'Eli Lilly and Company']
+            ['LLY', 'Eli Lilly and Co'],
+            ['KO', 'Coca-Cola Co'],
+            ['COST', 'Costco Wholesale Corp'],
+            ['PEP', 'PepsiCo Inc'],
+            ['TMO', 'Thermo Fisher Scientific Inc'],
+            ['ABT', 'Abbott Laboratories'],
+            ['ACN', 'Accenture PLC'],
+            ['VZ', 'Verizon Communications Inc'],
+            ['T', 'AT&T Inc'],
+            ['NFLX', 'Netflix Inc'],
+            ['CRM', 'Salesforce Inc'],
+            ['ADBE', 'Adobe Inc'],
+            ['TXN', 'Texas Instruments Inc'],
+            ['DHR', 'Danaher Corp'],
+            ['NKE', 'Nike Inc'],
+            ['ORCL', 'Oracle Corp'],
+            ['CVX', 'Chevron Corp'],
+            ['WFC', 'Wells Fargo & Co'],
+            ['AMD', 'Advanced Micro Devices Inc'],
+            ['INTC', 'Intel Corp'],
+            ['IBM', 'International Business Machines Corp'],
+            ['SPY', 'SPDR S&P 500 ETF Trust'],
+            ['QQQ', 'Invesco QQQ Trust'],
+            ['VOO', 'Vanguard S&P 500 ETF'],
+            ['VTI', 'Vanguard Total Stock Market ETF'],
+            ['BTC-USD', 'Bitcoin USD'],
+            ['ETH-USD', 'Ethereum USD']
         ]
         return pd.DataFrame(default_stocks, columns=['ticker', 'company_name'])
+
+def search_stocks(query, stock_data, max_results=10):
+    """
+    Search stocks by ticker or company name
+    Returns filtered results similar to Finviz autocomplete
+    """
+    if not query or len(query) < 1:
+        return []
+    
+    query = query.upper().strip()
+    results = []
+    
+    # Exact ticker matches first
+    exact_matches = stock_data[stock_data['ticker'].str.upper() == query]
+    for _, row in exact_matches.iterrows():
+        results.append({
+            'display': f"{row['ticker']} - {row['company_name']}",
+            'ticker': row['ticker'],
+            'company': row['company_name'],
+            'match_type': 'exact_ticker'
+        })
+    
+    # Ticker starts with query
+    if len(results) < max_results:
+        ticker_starts = stock_data[
+            (stock_data['ticker'].str.upper().str.startswith(query)) & 
+            (~stock_data['ticker'].str.upper().isin([r['ticker'].upper() for r in results]))
+        ]
+        for _, row in ticker_starts.iterrows():
+            if len(results) >= max_results:
+                break
+            results.append({
+                'display': f"{row['ticker']} - {row['company_name']}",
+                'ticker': row['ticker'],
+                'company': row['company_name'],
+                'match_type': 'ticker_starts'
+            })
+    
+    # Company name contains query
+    if len(results) < max_results:
+        company_contains = stock_data[
+            (stock_data['company_name'].str.upper().str.contains(query, na=False)) &
+            (~stock_data['ticker'].str.upper().isin([r['ticker'].upper() for r in results]))
+        ]
+        for _, row in company_contains.iterrows():
+            if len(results) >= max_results:
+                break
+            results.append({
+                'display': f"{row['ticker']} - {row['company_name']}",
+                'ticker': row['ticker'],
+                'company': row['company_name'],
+                'match_type': 'company_contains'
+            })
+    
+    # Ticker contains query (partial matches)
+    if len(results) < max_results:
+        ticker_contains = stock_data[
+            (stock_data['ticker'].str.upper().str.contains(query, na=False)) &
+            (~stock_data['ticker'].str.upper().isin([r['ticker'].upper() for r in results]))
+        ]
+        for _, row in ticker_contains.iterrows():
+            if len(results) >= max_results:
+                break
+            results.append({
+                'display': f"{row['ticker']} - {row['company_name']}",
+                'ticker': row['ticker'],
+                'company': row['company_name'],
+                'match_type': 'ticker_contains'
+            })
+    
+    return results[:max_results]
 
 @st.cache_data(ttl=300)  # Cache for 5 minutes
 def get_stock_data(ticker):
@@ -501,32 +696,109 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.header("🔍 Stock Selection")
+        st.header("🔍 Stock Search")
         
-        # Stock ticker input with autocomplete
-        ticker_options = stock_data['ticker'].tolist()
-        company_options = [f"{row['ticker']} - {row['company_name']}" for _, row in stock_data.iterrows()]
+        # Initialize session state for search
+        if 'search_query' not in st.session_state:
+            st.session_state.search_query = ""
+        if 'selected_ticker' not in st.session_state:
+            st.session_state.selected_ticker = "AAPL"
+        if 'show_suggestions' not in st.session_state:
+            st.session_state.show_suggestions = False
         
-        selected_option = st.selectbox(
-            "Select or type a stock ticker:",
-            options=company_options,
-            index=0,
-            help="Choose from popular stocks or type your own ticker"
+        # Finviz-style search input
+        st.markdown("**Search stocks by ticker or company name:**")
+        search_input = st.text_input(
+            "",
+            value=st.session_state.search_query,
+            placeholder="Type ticker or company name (e.g., AAPL, Apple, Microsoft)",
+            help="Search works like Finviz - type ticker symbols or company names",
+            key="stock_search",
+            label_visibility="collapsed"
         )
         
-        # Extract ticker from selection
-        ticker = selected_option.split(' - ')[0] if selected_option else 'AAPL'
+        # Update search query and show suggestions
+        if search_input != st.session_state.search_query:
+            st.session_state.search_query = search_input
+            st.session_state.show_suggestions = len(search_input) > 0
         
-        # Manual ticker input
-        manual_ticker = st.text_input(
-            "Or enter a ticker manually:",
-            value="",
-            help="Enter stock symbol (e.g., AAPL, TSLA)",
-            placeholder="e.g., AAPL"
-        ).upper()
+        # Get search results
+        ticker = st.session_state.selected_ticker  # Default
         
-        if manual_ticker:
-            ticker = manual_ticker
+        if st.session_state.show_suggestions and len(search_input) > 0:
+            # Get suggestions
+            suggestions = search_stocks(search_input, stock_data, max_results=8)
+            
+            if suggestions:
+                st.markdown("**💡 Suggestions:**")
+                
+                # Create a container for suggestions with custom styling
+                with st.container():
+                    # Display suggestions in a more compact way
+                    for i, suggestion in enumerate(suggestions):
+                        # Create a button-like display for each suggestion
+                        col1, col2 = st.columns([3, 1])
+                        
+                        with col1:
+                            # Show ticker and company name
+                            display_text = suggestion['display']
+                            if len(display_text) > 45:
+                                display_text = display_text[:42] + "..."
+                            
+                            # Color coding based on match type
+                            if suggestion['match_type'] == 'exact_ticker':
+                                st.markdown(f"🎯 **{display_text}**")
+                            elif suggestion['match_type'] == 'ticker_starts':
+                                st.markdown(f"📈 **{suggestion['ticker']}** - {suggestion['company'][:25]}...")
+                            else:
+                                st.markdown(f"🏢 {suggestion['ticker']} - **{suggestion['company'][:25]}**...")
+                        
+                        with col2:
+                            if st.button("Select", key=f"select_{i}_{suggestion['ticker']}", use_container_width=True):
+                                # Clean and validate the ticker
+                                cleaned_ticker = clean_ticker(suggestion['ticker'])
+                                if validate_ticker(cleaned_ticker):
+                                    st.session_state.selected_ticker = cleaned_ticker
+                                    st.session_state.search_query = cleaned_ticker
+                                    st.session_state.show_suggestions = False
+                                    ticker = cleaned_ticker
+                                    st.rerun()
+            else:
+                # No suggestions found, but check if it's a valid ticker
+                cleaned_search = clean_ticker(search_input)
+                if len(cleaned_search) > 0 and validate_ticker(cleaned_search):
+                    st.info(f"🎯 **{cleaned_search}** - Press Enter to analyze this ticker")
+                    if st.button(f"Analyze {cleaned_search}", use_container_width=True):
+                        st.session_state.selected_ticker = cleaned_search
+                        st.session_state.search_query = cleaned_search
+                        st.session_state.show_suggestions = False
+                        ticker = cleaned_search
+                        st.rerun()
+                elif len(search_input) > 2:
+                    st.warning("No matches found. Try searching by ticker symbol or company name.")
+        
+        # Display current selection
+        if ticker and ticker != "":
+            st.markdown("---")
+            st.markdown(f"**📊 Analyzing:** `{ticker}`")
+            
+            # Quick action buttons
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🔄 New Search", use_container_width=True):
+                    st.session_state.search_query = ""
+                    st.session_state.show_suggestions = False
+                    st.rerun()
+            with col2:
+                if st.button("📈 Popular", use_container_width=True):
+                    popular_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA"]
+                    import random
+                    random_ticker = random.choice(popular_tickers)
+                    st.session_state.selected_ticker = random_ticker
+                    st.session_state.search_query = random_ticker
+                    st.session_state.show_suggestions = False
+                    ticker = random_ticker
+                    st.rerun()
         
         st.markdown("---")
         
@@ -745,11 +1017,47 @@ def main():
         else:
             st.error(f"Could not fetch data for ticker: {ticker}. Please check the symbol and try again.")
     
+    else:
+        # Show default content when no valid ticker is selected
+        st.markdown('<div class="main-header">📊 Stock Analyzer</div>', unsafe_allow_html=True)
+        st.markdown("""
+        ### Welcome to Stock Analyzer v0.17!
+        
+        **🔍 NEW: Finviz-Style Search**
+        Just like Finviz.com, use the search bar in the sidebar to find stocks by:
+        - **Ticker symbols** (e.g., AAPL, TSLA, BRK.A)
+        - **Company names** (e.g., Apple, Tesla, Microsoft)
+        - **Partial matches** (e.g., "bank" → Bank of America)
+        
+        **Features:**
+        - 📈 **Real-time suggestions** as you type
+        - 📊 **Smart search** - exact matches first, then related stocks
+        - 💰 **Complete analysis**: Technical indicators, financials, intrinsic value
+        - 🤖 **AI-ready prompts** for copy-paste analysis
+        - 🔍 **Stock screeners** for finding opportunities
+        
+        **Try searching for:** Apple, MSFT, tesla, bank, ETF, bitcoin
+        """)
+        
+        # Show some popular examples
+        st.markdown("**💡 Popular stocks to try:**")
+        popular_examples = [
+            "AAPL (Apple)", "MSFT (Microsoft)", "GOOGL (Google)", 
+            "AMZN (Amazon)", "TSLA (Tesla)", "NVDA (NVIDIA)"
+        ]
+        cols = st.columns(3)
+        for i, example in enumerate(popular_examples):
+            with cols[i % 3]:
+                st.markdown(f"• {example}")
+        
+        st.info("👈 **Get started:** Use the search bar in the sidebar to find any stock!")
+        
+    
     # Footer
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666; padding: 2rem;">
-        <p><strong>Stock Analyzer v0.16</strong> - AI-Powered Stock Research Tool</p>
+        <p><strong>Stock Analyzer v0.17</strong> - AI-Powered Stock Research Tool</p>
         <p>⚠️ <strong>Disclaimer:</strong> This analysis is for educational purposes only. 
         Always consult with financial advisors and conduct your own research before making investment decisions.</p>
         <p>Data provided by Yahoo Finance • Built with Streamlit</p>
