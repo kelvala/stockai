@@ -1,17 +1,17 @@
 ticker,company_name
 A,A Corporation
 AA,AA Corporation
-AAL,AAL Corporation
-AAPL,AAPL Corp
+AAL,American Airlines Group Inc
+AAPL,Apple Inc
 AAXJ,AAXJ Corporation
 AB,AB Corporation
-ABBV,ABBV Inc
+ABBV,AbbVie Inc
 ABC,ABC Corporation
 ABMD,ABMD Corporation
 ABNB,Airbnb Inc
-ABT,ABT Inc
-ACN,ACN Inc
-ADBE,ADBE Corp
+ABT,Abbott Laboratories
+ACN,Accenture PLC
+ADBE,Adobe Inc
 ADI,ADI Corp
 ADM,ADM Corporation
 ADP,ADP Corp
@@ -36,12 +36,12 @@ ALL,ALL Corporation
 ALLE,ALLE Corporation
 AMAT,AMAT Corp
 AMC,AMC Entertainment Holdings Inc
-AMD,AMD Corp
+AMD,Advanced Micro Devices Inc
 AME,AME Corporation
 AMGN,AMGN Corp
 AMP,AMP Corporation
 AMT,AMT Corporation
-AMZN,AMZN Corp
+AMZN,Amazon.com Inc
 AN,AN Corporation
 ANET,ANET Corporation
 ANF,Abercrombie & Fitch Co
@@ -66,7 +66,7 @@ ASML,ASML Corp
 ATO,ATO Corporation
 ATVI,ATVI Corp
 AVB,AvalonBay Communities Inc
-AVGO,AVGO Corp
+AVGO,Broadcom Inc
 AVY,AVY Corporation
 AWK,AWK Corporation
 AXP,AXP Inc
@@ -74,7 +74,7 @@ AZO,AZO Corporation
 B,Barnes Group Inc
 BA,BA Corporation
 BABA,Alibaba Group Holding Ltd
-BAC,BAC Inc
+BAC,Bank of America Corp
 BATT,Amplify Lithium & Battery Technology ETF
 BAX,BAX Corporation
 BB,BlackBerry Ltd
@@ -150,10 +150,10 @@ COIN,Coinbase Global Inc
 COO,COO Corporation
 COP,COP Inc
 CORZ,Core Scientific Inc
-COST,COST Corp
+COST,Costco Wholesale Corp
 CPB,CPB Corporation
 CPRT,CPRT Corporation
-CRM,CRM Corp
+CRM,Salesforce Inc
 CRWD,CrowdStrike Holdings Inc
 CSCO,CSCO Corporation
 CSX,CSX Corp
@@ -163,7 +163,7 @@ CTSH,CTSH Corporation
 CTVA,CTVA Corporation
 CTXS,CTXS Corporation
 CVS,CVS Inc
-CVX,CVX Inc
+CVX,Chevron Corp
 CWEN,Clearway Energy Inc
 CXO,CXO Corporation
 D,D Corporation
@@ -176,7 +176,7 @@ DG,DG Inc
 DGHI,Digihost Technology Inc
 DGX,DGX Corporation
 DHI,DHI Corporation
-DHR,DHR Inc
+DHR,Danaher Corp
 DIS,DIS Inc
 DISCA,DISCA Corporation
 DISCK,DISCK Corporation
@@ -274,8 +274,8 @@ GLW,GLW Corporation
 GM,GM Inc
 GME,GameStop Corp
 GOLD,Barrick Gold Corporation
-GOOG,GOOG Corp
-GOOGL,GOOGL Corp
+GOOG,Alphabet Inc Class C
+GOOGL,Alphabet Inc Class A
 GPC,GPC Corporation
 GPN,GPN Corporation
 GPS,GPS Corporation
@@ -291,7 +291,7 @@ HAS,HAS Corporation
 HBAN,HBAN Corporation
 HBI,HBI Corporation
 HCA,HCA Corporation
-HD,HD Inc
+HD,Home Depot Inc
 HES,Hess Corp
 HEI,HEICO Corp Class A
 HEI.A,HEICO Corp Class A
@@ -316,7 +316,7 @@ HWM,HWM Corporation
 HYG,iShares iBoxx $ High Yield Corporate Bond ETF
 I,Intelsat S.A.
 IAG,Iamgold Corporation
-IBM,IBM Inc
+IBM,International Business Machines Corp
 ICE,ICE Inc
 IDXX,IDXX Corporation
 IEX,IEX Corporation
@@ -325,7 +325,7 @@ ILIT,iShares Lithium Miners and Producers ETF
 ILMN,ILMN Corporation
 INCY,INCY Corporation
 INFO,INFO Corporation
-INTC,INTC Corp
+INTC,Intel Corp
 INTU,INTU Corp
 IP,IP Corporation
 IPG,IPG Corporation
@@ -345,10 +345,10 @@ JBLU,JetBlue Airways Corporation
 JCI,JCI Corporation
 JD,JD.com Inc
 JKHY,JKHY Corporation
-JNJ,JNJ Inc
+JNJ,Johnson & Johnson
 JNPR,JNPR Corporation
 JOY,Komatsu Ltd
-JPM,JPM Inc
+JPM,JPMorgan Chase & Co
 JWN,Nordstrom Inc
 K,K Corporation
 KBAT,KraneShares Battery Metals & Technology ETF
@@ -361,7 +361,7 @@ KLAC,KLAC Corp
 KMB,KMB Corporation
 KMI,Kinder Morgan Inc
 KMX,KMX Corporation
-KO,KO Inc
+KO,Coca-Cola Co
 KR,KR Corporation
 KSS,KSS Corporation
 KSU,KSU Corporation
@@ -385,7 +385,7 @@ LBRDK,Liberty Broadband Corp Class C
 LSXMA,Liberty SiriusXM Group Class A
 LSXMK,Liberty SiriusXM Group Class C
 LKQ,LKQ Corporation
-LLY,LLY Inc
+LLY,Eli Lilly and Co
 LMT,LMT Corporation
 LNC,LNC Corporation
 LNT,LNT Corporation
@@ -403,7 +403,7 @@ LYFT,Lyft Inc
 LYNAS,Lynas Rare Earths Limited
 LYV,LYV Corporation
 M,Macy's Inc
-MA,MA Inc
+MA,Mastercard Inc
 MAA,MAA Corporation
 MAR,MAR Corporation
 MARA,Marathon Digital Holdings Inc
@@ -415,7 +415,7 @@ MCO,MCO Corporation
 MDLZ,MDLZ Corp
 MDT,MDT Corporation
 MET,MET Corporation
-META,META Corp
+META,Meta Platforms Inc
 MGM,MGM Corporation
 MHK,MHK Corporation
 MKC,MKC Corporation
@@ -436,7 +436,7 @@ MRO,MRO Corporation
 MRVL,MRVL Corp
 MS,MS Corporation
 MSCI,MSCI Corporation
-MSFT,MSFT Corp
+MSFT,Microsoft Corporation
 MSI,MSI Inc
 MSTR,MicroStrategy Inc
 MTB,MTB Corporation
@@ -450,11 +450,11 @@ NEE,NEE Inc
 NEE,NextEra Energy Inc
 NEM,NEM Corporation
 NET,Cloudflare Inc
-NFLX,NFLX Corp
+NFLX,Netflix Inc
 NI,NI Corporation
 NILE,BitNile Holdings Inc
 NIO,NIO Inc
-NKE,NKE Inc
+NKE,Nike Inc
 NKLA,Nikola Corporation
 NLOK,NLOK Corporation
 NLSN,NLSN Corporation
@@ -466,7 +466,7 @@ NSC,NSC Inc
 NTAP,NTAP Corporation
 NTRS,NTRS Corporation
 NUE,NUE Corporation
-NVDA,NVDA Corp
+NVDA,NVIDIA Corporation
 NVR,NVR Corporation
 NWL,NWL Corporation
 NWS,NWS Corporation
@@ -480,7 +480,7 @@ OKLO,Oklo Inc
 OKTA,Okta Inc
 OMC,OMC Corporation
 OPEN,Opendoor Technologies Inc
-ORCL,ORCL Inc
+ORCL,Oracle Corp
 ORLY,ORLY Corp
 OTIS,OTIS Corporation
 OXY,OXY Corporation
@@ -495,10 +495,10 @@ PCAR,PCAR Corporation
 PEAK,PEAK Corporation
 PEG,PEG Corporation
 PELL,Piedmont Lithium Inc
-PEP,PEP Corp
+PEP,PepsiCo Inc
 PFE,PFE Inc
 PFG,PFG Corporation
-PG,PG Inc
+PG,Procter & Gamble Co
 PGR,PGR Corporation
 PH,PH Corporation
 PHM,PHM Corporation
@@ -610,7 +610,7 @@ TGT,TGT Inc
 TIF,TIF Corporation
 TJX,TJX Inc
 TLT,iShares 20+ Year Treasury Bond ETF
-TMO,TMO Inc
+TMO,Thermo Fisher Scientific Inc
 TMUS,T-Mobile US Inc
 TPG,TPG Corporation
 TPR,TPR Corporation
@@ -618,14 +618,14 @@ TRIP,TRIP Corporation
 TROW,TROW Corporation
 TRV,TRV Corporation
 TSCO,TSCO Corporation
-TSLA,TSLA Corp
+TSLA,Tesla Inc
 TSM,Taiwan Semiconductor Manufacturing Company
 TSN,TSN Corporation
 TT,TT Corporation
 TTWO,TTWO Corporation
 TWLO,Twilio Inc
 TWTR,TWTR Corporation
-TXN,TXN Corp
+TXN,Texas Instruments Inc
 TXT,TXT Corporation
 TYL,TYL Corporation
 U,Unity Software Inc
@@ -638,7 +638,7 @@ UEC,Uranium Energy Corp
 UHS,UHS Corporation
 ULTA,ULTA Corporation
 UNG,"United States Natural Gas Fund, LP"
-UNH,UNH Inc
+UNH,UnitedHealth Group Inc
 UNM,UNM Corporation
 UNP,UNP Inc
 UPS,UPS Corporation
@@ -653,7 +653,7 @@ USB,USB Inc
 USO,"United States Oil Fund, LP"
 UTX,UTX Corporation
 UUUU,Energy Fuels Inc
-V,V Inc
+V,Visa Inc
 VAL,Valaris Limited
 VAR,VAR Corporation
 VEA,Vanguard FTSE Developed Markets ETF
@@ -669,7 +669,7 @@ VRTX,VRTX Corp
 VTI,Vanguard Total Stock Market ETF
 VTR,VTR Corporation
 VWO,Vanguard FTSE Emerging Markets ETF
-VZ,VZ Inc
+VZ,Verizon Communications Inc
 W,W Corporation
 WAB,WAB Corporation
 WAT,WAT Corporation
@@ -679,13 +679,13 @@ WDAY,WDAY Corp
 WDC,WDC Corporation
 WEC,WEC Corporation
 WELL,WELL Inc
-WFC,WFC Inc
+WFC,Wells Fargo & Co
 WHR,WHR Corporation
 WISH,ContextLogic Inc
 WLTW,WLTW Corporation
 WM,WM Inc
 WMB,Williams Companies Inc
-WMT,WMT Inc
+WMT,Walmart Inc
 WORK,Slack Technologies Inc
 WRB,WRB Corporation
 WRK,WRK Corporation
@@ -700,7 +700,7 @@ XLE,The Energy Select Sector SPDR Fund
 XLF,The Financial Select Sector SPDR Fund
 XLK,The Technology Select Sector SPDR Fund
 XLNX,XLNX Corporation
-XOM,XOM Inc
+XOM,Exxon Mobil Corp
 XPEV,XPeng Inc
 XRAY,XRAY Corporation
 XRX,XRX Corporation

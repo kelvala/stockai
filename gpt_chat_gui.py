@@ -33,6 +33,63 @@ except ImportError:
 # Free Hugging Face API endpoint (no key required for basic use)
 FREE_API_URL = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium"
 
+def clean_ticker(ticker_input):
+    """
+    Clean and validate ticker input
+    - Remove spaces and extra whitespace
+    - Convert to uppercase
+    - Remove invalid characters
+    - Handle common ticker formats (class shares, etc.)
+    """
+    if not ticker_input:
+        return ""
+    
+    # Remove all whitespace and convert to uppercase
+    cleaned = re.sub(r'\s+', '', str(ticker_input).upper())
+    
+    # Remove any characters that aren't letters, numbers, dots, or hyphens
+    cleaned = re.sub(r'[^A-Z0-9.-]', '', cleaned)
+    
+    # Handle common ticker formats
+    # Remove leading/trailing dots or hyphens
+    cleaned = cleaned.strip('.-')
+    
+    # If ticker starts with numbers, it's likely invalid - return empty
+    if cleaned and cleaned[0].isdigit():
+        return ""
+    
+    # Validate length (most tickers are 1-5 characters, some with class designations can be longer)
+    if len(cleaned) > 10:
+        cleaned = cleaned[:10]
+    
+    return cleaned
+
+def validate_ticker(ticker):
+    """
+    Basic ticker validation
+    Returns True if ticker appears to be in valid format
+    """
+    if not ticker:
+        return False
+    
+    # Basic format check: 1-10 characters, letters/numbers/dots/hyphens only
+    if not re.match(r'^[A-Z0-9.-]+$', ticker):
+        return False
+    
+    # Must start with a letter
+    if not ticker[0].isalpha():
+        return False
+    
+    # Length check - be more conservative with very long tickers
+    if len(ticker) < 1 or len(ticker) > 8:
+        return False
+    
+    # Additional validation: shouldn't be all numbers after the first letter
+    if len(ticker) > 1 and ticker[1:].isdigit() and len(ticker) > 5:
+        return False
+    
+    return True
+
 class AutomationProgressDialog:
     """Progress dialog to show during automation to prevent user interference"""
     def __init__(self, parent, ticker):
@@ -158,7 +215,7 @@ class AutomationProgressDialog:
 class StockAnalyzerGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Stock Analyzer - AI Powered v0.16")
+        self.root.title("Stock Analyzer - AI Powered v0.17")
         self.root.geometry("800x700")
         self.root.configure(bg="#f0f0f0")
         
@@ -177,6 +234,7 @@ class StockAnalyzerGUI:
         # Stock data for autocomplete
         self.stock_data = self.load_stock_data()
         self.suggestion_listbox = None
+        self.current_suggestions = []  # Store current suggestions for selection
         self.typing_new_ticker = False  # Flag to track if user is entering new ticker
         
         self.setup_gui()
@@ -193,12 +251,12 @@ class StockAnalyzerGUI:
         main_frame.columnconfigure(0, weight=1)
         
         # Title
-        title_label = ttk.Label(main_frame, text="📈 Stock Analyzer - AI Powered v0.16", 
+        title_label = ttk.Label(main_frame, text="📈 Stock Analyzer - AI Powered v0.17", 
                                font=("Arial", 24, "bold"))
         title_label.grid(row=0, column=0, pady=(0, 30))
         
         # Question/Input section - more compact
-        input_frame = ttk.LabelFrame(main_frame, text="Enter Stock Symbol or Company Name", padding="10")
+        input_frame = ttk.LabelFrame(main_frame, text="🔍 Stock Search - Type ticker or company name", padding="10")
         input_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         input_frame.columnconfigure(0, weight=1)
         input_frame.columnconfigure(1, weight=0)
@@ -209,7 +267,7 @@ class StockAnalyzerGUI:
                                      bg="#ffffff",
                                      fg="#000000")
         self.question_input.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 10))
-        self.question_input.insert("1.0", "Enter stock symbol (e.g., AAPL, TSLA) or company name...")
+        self.question_input.insert("1.0", "Type ticker or company name (e.g., AAPL, Apple, Microsoft)")
         self.question_input.bind("<FocusIn>", self.clear_placeholder)
         self.question_input.bind("<KeyRelease>", self.on_key_release)
         self.question_input.bind("<Return>", self.on_enter_key)
@@ -490,7 +548,7 @@ class StockAnalyzerGUI:
         """Clear placeholder text and auto-clear previous ticker when user clicks in input"""
         current_text = self.question_input.get("1.0", tk.END).strip()
         
-        if current_text == "Enter stock symbol (e.g., AAPL, TSLA) or company name...":
+        if current_text == "Type ticker or company name (e.g., AAPL, Apple, Microsoft)":
             # Clear placeholder text
             self.question_input.delete("1.0", tk.END)
         elif not self.typing_new_ticker:
@@ -549,61 +607,163 @@ class StockAnalyzerGUI:
         self.show_suggestions()
     
     def show_suggestions(self):
-        """Show stock ticker and company name suggestions"""
-        content = self.question_input.get("1.0", tk.END).strip().upper()
+        """Show stock ticker and company name suggestions with Finviz-style search"""
+        content = self.question_input.get("1.0", tk.END).strip()
         
-        if len(content) < 1 or content == "ENTER STOCK SYMBOL (E.G., AAPL, TSLA) OR COMPANY NAME...":
+        if len(content) < 1 or content.upper() == "TYPE TICKER OR COMPANY NAME (E.G., AAPL, APPLE, MICROSOFT)":
             self.hide_suggestions()
             return
         
-        # Find matching stocks
-        matches = []
-        for stock in self.stock_data:
-            ticker = stock['ticker']
-            company = stock['company'].upper()
-            
-            # Match ticker or company name
-            if ticker.startswith(content) or any(word.startswith(content) for word in company.split()):
-                matches.append(f"{ticker} - {stock['company']}")
+        # Use the advanced search function similar to web app
+        matches = self.search_stocks(content, max_results=8)
         
         if matches:
-            self.display_suggestions(matches[:10])  # Limit to 10 suggestions
+            self.display_suggestions(matches)
         else:
             self.hide_suggestions()
     
+    def search_stocks(self, query, max_results=8):
+        """
+        Advanced stock search with Finviz-style prioritization
+        Returns filtered results with match types and smart ranking
+        """
+        if not query or len(query) < 1:
+            return []
+        
+        query = query.upper().strip()
+        results = []
+        
+        # Exact ticker matches first (highest priority)
+        for stock in self.stock_data:
+            if stock['ticker'].upper() == query:
+                results.append({
+                    'display': f"{stock['ticker']} - {stock['company']}",
+                    'ticker': stock['ticker'],
+                    'company': stock['company'],
+                    'match_type': 'exact_ticker',
+                    'icon': '🎯'
+                })
+        
+        # Company name exact word matches (e.g., "APPLE" should find "Apple Inc")
+        if len(results) < max_results:
+            for stock in self.stock_data:
+                if stock['ticker'].upper() not in [r['ticker'].upper() for r in results]:
+                    company_words = stock['company'].upper().split()
+                    if any(word == query for word in company_words):
+                        results.append({
+                            'display': f"{stock['ticker']} - {stock['company']}",
+                            'ticker': stock['ticker'],
+                            'company': stock['company'],
+                            'match_type': 'company_exact_word',
+                            'icon': '🎯'
+                        })
+                        if len(results) >= max_results:
+                            break
+        
+        # Ticker starts with query
+        if len(results) < max_results:
+            for stock in self.stock_data:
+                if (stock['ticker'].upper().startswith(query) and 
+                    stock['ticker'].upper() not in [r['ticker'].upper() for r in results]):
+                    results.append({
+                        'display': f"{stock['ticker']} - {stock['company']}",
+                        'ticker': stock['ticker'],
+                        'company': stock['company'],
+                        'match_type': 'ticker_starts',
+                        'icon': '📈'
+                    })
+                    if len(results) >= max_results:
+                        break
+        
+        # Company name contains query
+        if len(results) < max_results:
+            for stock in self.stock_data:
+                if (query in stock['company'].upper() and 
+                    stock['ticker'].upper() not in [r['ticker'].upper() for r in results]):
+                    results.append({
+                        'display': f"{stock['ticker']} - {stock['company']}",
+                        'ticker': stock['ticker'],
+                        'company': stock['company'],
+                        'match_type': 'company_contains',
+                        'icon': '🏢'
+                    })
+                    if len(results) >= max_results:
+                        break
+        
+        # Ticker contains query (partial matches)
+        if len(results) < max_results:
+            for stock in self.stock_data:
+                if (query in stock['ticker'].upper() and 
+                    stock['ticker'].upper() not in [r['ticker'].upper() for r in results]):
+                    results.append({
+                        'display': f"{stock['ticker']} - {stock['company']}",
+                        'ticker': stock['ticker'],
+                        'company': stock['company'],
+                        'match_type': 'ticker_contains',
+                        'icon': '📊'
+                    })
+                    if len(results) >= max_results:
+                        break
+        
+        return results
+    
     def display_suggestions(self, suggestions):
-        """Display suggestion dropdown"""
+        """Display enhanced suggestion dropdown with Finviz-style formatting"""
         if self.suggestion_listbox:
             self.suggestion_listbox.destroy()
         
-        # Create suggestion listbox with proper colors
-        self.suggestion_listbox = tk.Listbox(self.root, height=min(len(suggestions), 8), 
-                                           font=("Arial", 10), 
-                                           bg="#ffffff",      # White background
-                                           fg="#2c3e50",      # Dark blue text
+        # Create suggestion listbox with enhanced styling
+        max_height = min(len(suggestions), 6)  # Show up to 6 suggestions at once
+        self.suggestion_listbox = tk.Listbox(self.root, 
+                                           height=max_height,
+                                           font=("Arial", 11), 
+                                           bg="#ffffff",           # White background
+                                           fg="#2c3e50",           # Dark blue text
                                            selectbackground="#007acc",  # Blue selection
                                            selectforeground="#ffffff",  # White text when selected
                                            highlightthickness=1,
                                            highlightcolor="#007acc",
                                            relief="solid",
-                                           borderwidth=1)
+                                           borderwidth=1,
+                                           activestyle="dotbox")    # Better selection style
         
-        # Add suggestions
+        # Add enhanced suggestions with icons and formatting
         for suggestion in suggestions:
-            self.suggestion_listbox.insert(tk.END, suggestion)
+            icon = suggestion.get('icon', '📊')
+            ticker = suggestion['ticker']
+            company = suggestion['company']
+            
+            # Truncate company name if too long for better display
+            if len(company) > 40:
+                company = company[:37] + "..."
+            
+            # Format based on match type for better visual hierarchy
+            if suggestion['match_type'] in ['exact_ticker', 'company_exact_word']:
+                # Highlight exact matches
+                display_text = f"{icon} {ticker} - {company} ★"
+            else:
+                display_text = f"{icon} {ticker} - {company}"
+            
+            self.suggestion_listbox.insert(tk.END, display_text)
         
-        # Position the listbox below the input
+        # Position the listbox below the input with better positioning
         input_x = self.question_input.winfo_rootx()
         input_y = self.question_input.winfo_rooty() + self.question_input.winfo_height()
-        input_width = self.question_input.winfo_width()
+        input_width = max(self.question_input.winfo_width(), 400)  # Minimum width for readability
         
-        self.suggestion_listbox.place(x=input_x - self.root.winfo_rootx(), 
-                                    y=input_y - self.root.winfo_rooty(),
-                                    width=input_width)
+        # Calculate position relative to root window
+        rel_x = input_x - self.root.winfo_rootx()
+        rel_y = input_y - self.root.winfo_rooty()
         
-        # Bind selection event
+        self.suggestion_listbox.place(x=rel_x, y=rel_y, width=input_width)
+        
+        # Bind enhanced selection events
         self.suggestion_listbox.bind("<Double-Button-1>", self.on_suggestion_select)
         self.suggestion_listbox.bind("<Return>", self.on_suggestion_select)
+        self.suggestion_listbox.bind("<Button-1>", self.on_suggestion_click)
+        
+        # Store suggestions data for selection handling
+        self.current_suggestions = suggestions
     
     def hide_suggestions(self, event=None):
         """Hide suggestion dropdown"""
@@ -612,22 +772,56 @@ class StockAnalyzerGUI:
             self.suggestion_listbox = None
     
     def on_suggestion_select(self, event):
-        """Handle suggestion selection"""
-        selection = self.suggestion_listbox.get(self.suggestion_listbox.curselection())
-        ticker = selection.split(" - ")[0]
-        
-        # Clear input and insert selected ticker
-        self.question_input.delete("1.0", tk.END)
-        self.question_input.insert("1.0", ticker)
-        
-        # Hide suggestions
-        self.hide_suggestions()
-        
-        # Reset typing flag since user selected from suggestions
-        self.typing_new_ticker = False
-        
-        # Focus back to input
-        self.question_input.focus_set()
+        """Handle suggestion selection (double-click or Enter)"""
+        try:
+            selection_index = self.suggestion_listbox.curselection()[0]
+            selected_suggestion = self.current_suggestions[selection_index]
+            ticker = selected_suggestion['ticker']
+            
+            # Clear input and insert selected ticker
+            self.question_input.delete("1.0", tk.END)
+            self.question_input.insert("1.0", ticker)
+            
+            # Hide suggestions
+            self.hide_suggestions()
+            
+            # Reset typing flag since user selected from suggestions
+            self.typing_new_ticker = False
+            
+            # Focus back to input
+            self.question_input.focus_set()
+            
+            # Auto-analyze if it's an exact match (like the web app)
+            if selected_suggestion['match_type'] in ['exact_ticker', 'company_exact_word']:
+                self.root.after(100, self.run_gpt)  # Small delay to ensure UI updates
+                
+        except (IndexError, AttributeError):
+            # Handle case where no selection or suggestions data is missing
+            pass
+    
+    def on_suggestion_click(self, event):
+        """Handle single click on suggestion (select but don't auto-run)"""
+        try:
+            selection_index = self.suggestion_listbox.curselection()[0]
+            selected_suggestion = self.current_suggestions[selection_index]
+            ticker = selected_suggestion['ticker']
+            
+            # Clear input and insert selected ticker
+            self.question_input.delete("1.0", tk.END)
+            self.question_input.insert("1.0", ticker)
+            
+            # Hide suggestions
+            self.hide_suggestions()
+            
+            # Reset typing flag since user selected from suggestions
+            self.typing_new_ticker = False
+            
+            # Focus back to input
+            self.question_input.focus_set()
+            
+        except (IndexError, AttributeError):
+            # Handle case where no selection or suggestions data is missing
+            pass
     
     def on_enter_key(self, event):
         """Execute analysis when Enter key is pressed"""
@@ -1358,7 +1552,7 @@ class StockAnalyzerGUI:
         """Main function to run Stock Analysis AI"""
         question = self.question_input.get("1.0", tk.END).strip()
         
-        if not question or question == "Enter stock symbol (e.g., AAPL, TSLA) or company name...":
+        if not question or question == "Type ticker or company name (e.g., AAPL, Apple, Microsoft)":
             messagebox.showwarning("No Input", "Please enter a stock symbol or company name!")
             return
         
@@ -1386,15 +1580,22 @@ class StockAnalyzerGUI:
         thread.start()
     
     def _format_stock_input(self, input_text):
-        """Convert stock tickers to uppercase and format input"""
-        # Find potential stock tickers (1-5 letter combinations)
-        def uppercase_ticker(match):
-            return match.group().upper()
+        """Clean and format stock ticker input using advanced validation"""
+        # First, try to clean the entire input as a potential ticker
+        cleaned_ticker = clean_ticker(input_text)
         
-        # Convert potential stock tickers to uppercase
-        formatted = re.sub(r'\b[A-Za-z]{1,5}\b', uppercase_ticker, input_text)
+        # If it's a valid ticker, return it
+        if validate_ticker(cleaned_ticker):
+            return cleaned_ticker
         
-        return formatted
+        # Otherwise, look for potential tickers in the text and clean them
+        words = input_text.split()
+        for i, word in enumerate(words):
+            cleaned_word = clean_ticker(word)
+            if validate_ticker(cleaned_word):
+                words[i] = cleaned_word
+        
+        return ' '.join(words)
     
     def _call_local_ai(self, question):
         """Call local AI model"""
