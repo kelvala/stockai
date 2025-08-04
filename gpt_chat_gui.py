@@ -215,7 +215,7 @@ class AutomationProgressDialog:
 class StockAnalyzerGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Stock Analyzer - AI Powered v0.17")
+        self.root.title("Stock Analyzer - AI Powered v0.18")
         self.root.geometry("800x700")
         self.root.configure(bg="#f0f0f0")
         
@@ -251,7 +251,7 @@ class StockAnalyzerGUI:
         main_frame.columnconfigure(0, weight=1)
         
         # Title
-        title_label = ttk.Label(main_frame, text="📈 Stock Analyzer - AI Powered v0.17", 
+        title_label = ttk.Label(main_frame, text="📈 Stock Analyzer - AI Powered v0.18", 
                                font=("Arial", 24, "bold"))
         title_label.grid(row=0, column=0, pady=(0, 30))
         
@@ -1706,6 +1706,12 @@ class StockAnalyzerGUI:
                 elif current_price < min(senkou_span_a, senkou_span_b):
                     ichimoku_signal = "BEARISH"
             
+            # Stochastic Oscillator calculation (5-day period)
+            lowest_low_5 = hist['Low'].rolling(window=5).min()
+            highest_high_5 = hist['High'].rolling(window=5).max()
+            stoch_k = (100 * ((hist['Close'] - lowest_low_5) / (highest_high_5 - lowest_low_5))).iloc[-1]
+            stoch_d = (100 * ((hist['Close'] - lowest_low_5) / (highest_high_5 - lowest_low_5))).rolling(window=3).mean().iloc[-1]
+            
             # Volume analysis
             avg_volume = hist['Volume'].mean()
             current_volume = hist['Volume'].iloc[-1]
@@ -1772,6 +1778,18 @@ class StockAnalyzerGUI:
             else:
                 formatted += f"(NEUTRAL)\n"
             
+            # Stochastic Oscillator (5-day)
+            formatted += f"• Stochastic %K (5-day): {stoch_k:.1f} "
+            formatted += f"• Stochastic %D (3-day): {stoch_d:.1f}\n"
+            if stoch_k > 80 and stoch_d > 80:
+                formatted += f"• Stochastic Signal: OVERBOUGHT (Both above 80)\n"
+            elif stoch_k < 20 and stoch_d < 20:
+                formatted += f"• Stochastic Signal: OVERSOLD (Both below 20)\n"
+            elif stoch_k > stoch_d:
+                formatted += f"• Stochastic Signal: BULLISH (%K above %D)\n"
+            else:
+                formatted += f"• Stochastic Signal: BEARISH (%K below %D)\n"
+            
             formatted += f"• MACD: {macd_current:.3f}, Signal: {signal_current:.3f}\n"
             if macd_current > signal_current:
                 formatted += f"• MACD Signal: BULLISH (MACD above signal line)\n"
@@ -1827,8 +1845,13 @@ class StockAnalyzerGUI:
             if ichimoku_signal == "BEARISH": signals.append("Ichimoku Bearish")
             if volume_ratio > 1.5: signals.append("High Volume")
             
-            bullish_signals = sum(1 for s in signals if s in ["Oversold RSI", "Above 9-day MA", "Above 50-day MA", "Above 200-day MA", "MACD Bullish", "Ichimoku Bullish", "High Volume"])
-            bearish_signals = sum(1 for s in signals if s in ["Overbought RSI", "Ichimoku Bearish"])
+            # Stochastic signals
+            if stoch_k < 20 and stoch_d < 20: signals.append("Stochastic Oversold")
+            if stoch_k > 80 and stoch_d > 80: signals.append("Stochastic Overbought")
+            if stoch_k > stoch_d and stoch_k < 80: signals.append("Stochastic Bullish Cross")
+            
+            bullish_signals = sum(1 for s in signals if s in ["Oversold RSI", "Above 9-day MA", "Above 50-day MA", "Above 200-day MA", "MACD Bullish", "Ichimoku Bullish", "High Volume", "Stochastic Oversold", "Stochastic Bullish Cross"])
+            bearish_signals = sum(1 for s in signals if s in ["Overbought RSI", "Ichimoku Bearish", "Stochastic Overbought"])
             
             if bullish_signals >= 3:
                 recommendation = "BUY"
@@ -1857,7 +1880,7 @@ class StockAnalyzerGUI:
             formatted += f"Always consult with financial advisors and conduct your own research before making investment decisions.\n"
             formatted += f"Past performance does not guarantee future results.\n\n"
             formatted += f"{'='*60}\n"
-            formatted += f"🏁 END OF ANALYSIS - Stock Analyzer v0.15 🏁\n"
+            formatted += f"🏁 END OF ANALYSIS - Stock Analyzer v0.18 🏁\n"
             formatted += f"{'='*60}\n"
             formatted += f"\n\n\n------- SCROLL DOWN TO SEE COMPLETE ANALYSIS -------\n\n"
             
