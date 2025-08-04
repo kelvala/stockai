@@ -719,7 +719,7 @@ def main():
             st.session_state.selected_ticker = "AAPL"
         
         # Create dropdown with tickers and company names
-        popular_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "JPM", "V", "WMT", "BAC", "JNJ", "PG", "XOM", "HD", "MA", "KO", "PEP", "ABBV", "COST", "NFLX", "ADBE", "CRM", "NKE", "ORCL", "WFC", "AMD", "INTC", "IBM", "SPY", "QQQ", "BTC-USD", "ETH-USD"]
+        popular_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "JPM", "V", "WMT", "BAC", "JNJ", "PG", "XOM", "HD", "MA", "KO", "PEP", "ABBV", "COST", "NFLX", "ADBE", "CRM", "NKE", "ORCL", "WFC", "AMD", "INTC", "IBM", "SPY", "QQQ", "BTC-USD", "ETH-USD", "CPER", "GLD", "SLV", "USO", "UNG", "DBA", "XLK", "XLF", "XLE", "XLV", "ARKK", "VTI", "EFA", "EEM"]
         
         # Create dropdown options with ticker + company name
         dropdown_options = []
