@@ -789,47 +789,25 @@ def main():
                 company_name = matching_row.iloc[0]['company_name']
             dropdown_options.append(f"{ticker} - {company_name}")
         
-        # Stock ticker selection with dual input approach
+        # Stock ticker selection
         st.markdown("**Select or enter a ticker:**")
         
-        # Create two columns for dropdown and direct input (wider direct input)
-        col1, col2 = st.columns([3, 2])
+        # Find the index for the current selected ticker in dropdown options
+        default_index = 0
+        for i, option in enumerate(dropdown_options):
+            if option.startswith(st.session_state.selected_ticker + " - "):
+                default_index = i
+                break
         
-        with col1:
-            # Find the index for the current selected ticker in dropdown options
-            default_index = 0
-            for i, option in enumerate(dropdown_options):
-                if option.startswith(st.session_state.selected_ticker + " - "):
-                    default_index = i
-                    break
-            
-            selected_from_dropdown = st.selectbox(
-                "Choose from popular stocks:",
-                options=dropdown_options,
-                index=default_index,
-                label_visibility="collapsed"
-            )
-        
-        with col2:
-            # Direct ticker input - wider and better UX
-            direct_ticker_input = st.text_input(
-                "Or type ticker:",
-                value="",
-                placeholder="Type ticker...",
-                help="Enter any ticker symbol directly - double-click to select all",
-                label_visibility="collapsed",
-                key="direct_ticker_input"
-            )
+        selected_from_dropdown = st.selectbox(
+            "Choose from popular stocks:",
+            options=dropdown_options,
+            index=default_index,
+            label_visibility="collapsed"
+        )
         
         # Extract ticker from dropdown selection
         dropdown_ticker = selected_from_dropdown.split(" - ")[0] if selected_from_dropdown else "AAPL"
-        
-        # Handle direct ticker input (takes priority)
-        if direct_ticker_input and direct_ticker_input.strip():
-            cleaned_direct = clean_ticker(direct_ticker_input.strip())
-            if cleaned_direct:
-                st.session_state.selected_ticker = cleaned_direct
-                st.info(f"🎯 **Analyzing:** `{cleaned_direct}` (from direct input)")
         
         st.markdown("---")
         
@@ -893,8 +871,8 @@ def main():
                 else:
                     st.warning("No matches found. Try ticker symbols like AAPL, MSFT, or company names like Apple, Microsoft.")
         
-        # Update ticker only if dropdown was manually changed (and no search input or direct input)
-        if not search_input and not direct_ticker_input and dropdown_ticker != st.session_state.selected_ticker:
+        # Update ticker only if dropdown was manually changed (and no search input)
+        if not search_input and dropdown_ticker != st.session_state.selected_ticker:
             ticker = dropdown_ticker
             st.session_state.selected_ticker = dropdown_ticker
         
