@@ -714,125 +714,106 @@ def main():
     with st.sidebar:
         st.header("🔍 Stock Search")
         
-        # Initialize session state for search
-        if 'search_query' not in st.session_state:
-            st.session_state.search_query = ""
+        # Initialize session state
         if 'selected_ticker' not in st.session_state:
             st.session_state.selected_ticker = "AAPL"
-        if 'show_suggestions' not in st.session_state:
-            st.session_state.show_suggestions = False
         
-        # Finviz-style search input
-        st.markdown("**Search stocks by ticker or company name:**")
-        search_input = st.text_input(
-            "",
-            value=st.session_state.search_query,
-            placeholder="Type ticker or company name (e.g., AAPL, Apple, Microsoft)",
-            help="Search works like Finviz - type ticker symbols or company names",
-            key="stock_search",
+        # Create dropdown with tickers and company names
+        popular_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA", "META", "JPM", "V", "WMT", "BAC", "JNJ", "PG", "XOM", "HD", "MA", "KO", "PEP", "ABBV", "COST", "NFLX", "ADBE", "CRM", "NKE", "ORCL", "WFC", "AMD", "INTC", "IBM", "SPY", "QQQ", "BTC-USD", "ETH-USD"]
+        
+        # Create dropdown options with ticker + company name
+        dropdown_options = []
+        for ticker in popular_tickers:
+            # Find company name in stock data
+            company_name = ticker  # fallback
+            matching_row = stock_data[stock_data['ticker'] == ticker]
+            if not matching_row.empty:
+                company_name = matching_row.iloc[0]['company_name']
+            dropdown_options.append(f"{ticker} - {company_name}")
+        
+        # Stock ticker dropdown
+        st.markdown("**Select a popular stock:**")
+        selected_from_dropdown = st.selectbox(
+            "Choose from popular stocks:",
+            options=dropdown_options,
+            index=0,
             label_visibility="collapsed"
         )
         
-        # Update search query and show suggestions
-        if search_input != st.session_state.search_query:
-            st.session_state.search_query = search_input
-            st.session_state.show_suggestions = len(search_input) > 0
+        # Extract ticker from dropdown selection
+        dropdown_ticker = selected_from_dropdown.split(" - ")[0] if selected_from_dropdown else "AAPL"
         
-        # Get search results
-        ticker = st.session_state.selected_ticker  # Default
+        st.markdown("---")
         
-        if st.session_state.show_suggestions and len(search_input) > 0:
-            # Get suggestions
-            suggestions = search_stocks(search_input, stock_data, max_results=8)
+        # Search box for typing ticker or company name
+        st.markdown("**Or search by typing:**")
+        search_input = st.text_input(
+            "Search stocks:",
+            placeholder="Type ticker (AAPL) or company name (Apple)",
+            help="Start typing to see possible matches",
+            label_visibility="collapsed"
+        )
+        
+        # Show possible matches when user types
+        ticker = dropdown_ticker  # Default to dropdown selection
+        
+        if search_input and len(search_input.strip()) > 0:
+            # Simple search - find matches in ticker or company name
+            query = search_input.strip().upper()
+            matches = []
             
-            if suggestions:
-                st.markdown("**💡 Suggestions:**")
+            for _, row in stock_data.iterrows():
+                ticker_match = query in row['ticker'].upper()
+                company_match = query in row['company_name'].upper()
                 
-                # Create a container for suggestions with custom styling
-                with st.container():
-                    # Display suggestions in a more compact way
-                    for i, suggestion in enumerate(suggestions):
-                        # Create a button-like display for each suggestion
-                        col1, col2 = st.columns([3, 1])
-                        
-                        with col1:
-                            # Show ticker and company name
-                            display_text = suggestion['display']
-                            if len(display_text) > 45:
-                                display_text = display_text[:42] + "..."
-                            
-                            # Color coding based on match type
-                            if suggestion['match_type'] == 'exact_ticker':
-                                st.markdown(f"🎯 **{display_text}**")
-                            elif suggestion['match_type'] == 'company_exact_word':
-                                st.markdown(f"🎯 **{suggestion['ticker']}** - {suggestion['company'][:30]}...")
-                            elif suggestion['match_type'] == 'ticker_starts':
-                                st.markdown(f"📈 **{suggestion['ticker']}** - {suggestion['company'][:25]}...")
-                            else:
-                                st.markdown(f"🏢 {suggestion['ticker']} - **{suggestion['company'][:25]}**...")
-                        
-                        with col2:
-                            if st.button("Select", key=f"select_{i}_{suggestion['ticker']}", use_container_width=True):
-                                # Clean and validate the ticker
-                                cleaned_ticker = clean_ticker(suggestion['ticker'])
-                                if validate_ticker(cleaned_ticker):
-                                    st.session_state.selected_ticker = cleaned_ticker
-                                    st.session_state.search_query = cleaned_ticker
-                                    st.session_state.show_suggestions = False
-                                    ticker = cleaned_ticker
-                                    st.rerun()
+                if ticker_match or company_match:
+                    matches.append({
+                        'ticker': row['ticker'],
+                        'company': row['company_name']
+                    })
+            
+            # Limit to first 8 matches
+            matches = matches[:8]
+            
+            if matches:
+                st.markdown("**� Possible matches:**")
+                
+                # Display matches simply
+                for i, match in enumerate(matches):  # Show up to 8 matches
+                    # Show ticker and company name clearly
+                    display_text = f"{match['ticker']} - {match['company']}"
+                    if len(display_text) > 50:
+                        display_text = display_text[:47] + "..."
                     
-                    # Auto-select first suggestion if it's an exact match and user pressed Enter
-                    if suggestions and suggestions[0]['match_type'] in ['exact_ticker', 'company_exact_word']:
-                        if st.button(f"✅ Analyze {suggestions[0]['ticker']}", key="auto_select", use_container_width=True, type="primary"):
-                            cleaned_ticker = clean_ticker(suggestions[0]['ticker'])
-                            if validate_ticker(cleaned_ticker):
-                                st.session_state.selected_ticker = cleaned_ticker
-                                st.session_state.search_query = cleaned_ticker
-                                st.session_state.show_suggestions = False
-                                ticker = cleaned_ticker
-                                st.rerun()
-            else:
-                # No suggestions found - check if user entered something that looks like a ticker
-                cleaned_search = clean_ticker(search_input)
-                if len(cleaned_search) > 0 and validate_ticker(cleaned_search):
-                    st.info(f"🎯 **{cleaned_search}** - Press button to analyze")
-                    if st.button(f"Analyze {cleaned_search}", use_container_width=True):
-                        st.session_state.selected_ticker = cleaned_search
-                        st.session_state.search_query = cleaned_search
-                        st.session_state.show_suggestions = False
-                        ticker = cleaned_search
+                    if st.button(
+                        display_text,
+                        key=f"match_{i}_{match['ticker']}",
+                        use_container_width=True
+                    ):
+                        ticker = match['ticker']
+                        st.session_state.selected_ticker = ticker
                         st.rerun()
-                elif len(search_input) > 2:
-                    st.warning("No matches found. Try:")
-                    st.markdown("""
-                    - **Ticker symbols**: AAPL, MSFT, GOOGL
-                    - **Company names**: Apple, Microsoft, Google
-                    - **Partial names**: bank, tech, energy
-                    """)
+            elif len(search_input.strip()) > 2:
+                # Check if it looks like a valid ticker
+                cleaned_search = clean_ticker(search_input)
+                if validate_ticker(cleaned_search):
+                    st.info(f"💡 **{cleaned_search}** looks like a ticker symbol")
+                    if st.button(f"Analyze {cleaned_search}", use_container_width=True):
+                        ticker = cleaned_search
+                        st.session_state.selected_ticker = ticker
+                        st.rerun()
+                else:
+                    st.warning("No matches found. Try ticker symbols like AAPL, MSFT, or company names like Apple, Microsoft.")
+        
+        # Update ticker if dropdown changed
+        if dropdown_ticker != st.session_state.selected_ticker:
+            ticker = dropdown_ticker
+            st.session_state.selected_ticker = dropdown_ticker
         
         # Display current selection
-        if ticker and ticker != "":
+        if ticker:
             st.markdown("---")
             st.markdown(f"**📊 Analyzing:** `{ticker}`")
-            
-            # Quick action buttons
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("🔄 New Search", use_container_width=True):
-                    st.session_state.search_query = ""
-                    st.session_state.show_suggestions = False
-                    st.rerun()
-            with col2:
-                if st.button("📈 Popular", use_container_width=True):
-                    popular_tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "NVDA"]
-                    import random
-                    random_ticker = random.choice(popular_tickers)
-                    st.session_state.selected_ticker = random_ticker
-                    st.session_state.search_query = random_ticker
-                    st.session_state.show_suggestions = False
-                    ticker = random_ticker
-                    st.rerun()
         
         st.markdown("---")
         
@@ -1057,34 +1038,21 @@ def main():
         st.markdown("""
         ### Welcome to Stock Analyzer v0.17!
         
-        **🔍 NEW: Finviz-Style Search**
-        Just like Finviz.com, use the search bar in the sidebar to find stocks by:
-        - **Ticker symbols** (e.g., AAPL, TSLA, BRK.A)
-        - **Company names** (e.g., Apple, Tesla, Microsoft)
-        - **Partial matches** (e.g., "bank" → Bank of America)
+        **🔍 Easy Stock Search:**
+        - **Dropdown Selection:** Choose from popular stocks in the sidebar
+        - **Search by Typing:** Type ticker symbols (AAPL) or company names (Apple)
+        - **Instant Matches:** See possible matches as you type
         
         **Features:**
-        - 📈 **Real-time suggestions** as you type
-        - 📊 **Smart search** - exact matches first, then related stocks
-        - 💰 **Complete analysis**: Technical indicators, financials, intrinsic value
-        - 🤖 **AI-ready prompts** for copy-paste analysis
-        - 🔍 **Stock screeners** for finding opportunities
+        - 📈 **Complete Technical Analysis** with charts and indicators
+        - 💰 **Intrinsic Value Calculation** and investment recommendations  
+        - 🤖 **AI Assistant Integration** for advanced analysis
+        - 🔍 **Stock Screeners** for finding opportunities
         
-        **Try searching for:** Apple, MSFT, tesla, bank, ETF, bitcoin
+        **Popular stocks to try:** AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA
         """)
         
-        # Show some popular examples
-        st.markdown("**💡 Popular stocks to try:**")
-        popular_examples = [
-            "AAPL (Apple)", "MSFT (Microsoft)", "GOOGL (Google)", 
-            "AMZN (Amazon)", "TSLA (Tesla)", "NVDA (NVIDIA)"
-        ]
-        cols = st.columns(3)
-        for i, example in enumerate(popular_examples):
-            with cols[i % 3]:
-                st.markdown(f"• {example}")
-        
-        st.info("👈 **Get started:** Use the search bar in the sidebar to find any stock!")
+        st.info("👈 **Get started:** Use the dropdown or search box in the sidebar!")
         
     
     # Footer
