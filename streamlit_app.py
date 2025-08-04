@@ -733,10 +733,18 @@ def main():
         
         # Stock ticker dropdown
         st.markdown("**Select a popular stock:**")
+        
+        # Find the index for the current selected ticker in dropdown options
+        default_index = 0
+        for i, option in enumerate(dropdown_options):
+            if option.startswith(st.session_state.selected_ticker + " - "):
+                default_index = i
+                break
+        
         selected_from_dropdown = st.selectbox(
             "Choose from popular stocks:",
             options=dropdown_options,
-            index=0,
+            index=default_index,
             label_visibility="collapsed"
         )
         
@@ -755,7 +763,7 @@ def main():
         )
         
         # Show possible matches when user types
-        ticker = dropdown_ticker  # Default to dropdown selection
+        ticker = st.session_state.selected_ticker  # Use session state as primary source
         
         if search_input and len(search_input.strip()) > 0:
             # Simple search - find matches in ticker or company name
@@ -805,8 +813,8 @@ def main():
                 else:
                     st.warning("No matches found. Try ticker symbols like AAPL, MSFT, or company names like Apple, Microsoft.")
         
-        # Update ticker if dropdown changed
-        if dropdown_ticker != st.session_state.selected_ticker:
+        # Update ticker only if dropdown was manually changed (and no search input)
+        if not search_input and dropdown_ticker != st.session_state.selected_ticker:
             ticker = dropdown_ticker
             st.session_state.selected_ticker = dropdown_ticker
         
