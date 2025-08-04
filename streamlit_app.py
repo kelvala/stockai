@@ -451,6 +451,15 @@ def calculate_technical_indicators(hist):
     
     hist['Chikou_span'] = hist['Close'].shift(-26)
     
+    # Stochastic Oscillator (5-day period as requested)
+    # %K (Fast Stochastic) - 5 period
+    lowest_low_5 = hist['Low'].rolling(window=5).min()
+    highest_high_5 = hist['High'].rolling(window=5).max()
+    hist['Stoch_K'] = 100 * ((hist['Close'] - lowest_low_5) / (highest_high_5 - lowest_low_5))
+    
+    # %D (Slow Stochastic) - 3 period SMA of %K
+    hist['Stoch_D'] = hist['Stoch_K'].rolling(window=3).mean()
+    
     return hist
 
 def calculate_intrinsic_value(info, current_price):
@@ -524,6 +533,8 @@ def get_recommendation(hist, info, current_price, intrinsic_value):
         sma_200 = hist['SMA_200'].iloc[-1]
         macd = hist['MACD'].iloc[-1]
         macd_signal = hist['MACD_Signal'].iloc[-1]
+        stoch_k = hist['Stoch_K'].iloc[-1]
+        stoch_d = hist['Stoch_D'].iloc[-1]
         
         # Score calculation
         score = 0
@@ -552,6 +563,17 @@ def get_recommendation(hist, info, current_price, intrinsic_value):
         if macd > macd_signal:
             score += 1
             signals.append("MACD Bullish")
+        
+        # Stochastic signals
+        if stoch_k < 20 and stoch_d < 20:
+            score += 1.5
+            signals.append("Stochastic Oversold")
+        elif stoch_k > 80 and stoch_d > 80:
+            score -= 1.5
+            signals.append("Stochastic Overbought")
+        elif stoch_k > stoch_d and stoch_k < 80:
+            score += 0.5
+            signals.append("Stochastic Bullish Cross")
         
         # Valuation signal
         if intrinsic_value and current_price < intrinsic_value * 0.9:
@@ -754,6 +776,43 @@ def create_ichimoku_chart(hist, ticker):
         yaxis_title="Price ($)",
         xaxis_title="Date",
         height=400,
+        showlegend=True
+    )
+    
+    return fig
+
+def create_stochastic_chart(hist):
+    """Create Stochastic Oscillator chart (5-day %K and %D)"""
+    fig = go.Figure()
+    
+    # %K (Fast Stochastic) - Blue line
+    fig.add_trace(go.Scatter(
+        x=hist.index, y=hist['Stoch_K'],
+        line=dict(color='blue', width=2),
+        name='%K (Fast)'
+    ))
+    
+    # %D (Slow Stochastic) - Red line
+    fig.add_trace(go.Scatter(
+        x=hist.index, y=hist['Stoch_D'],
+        line=dict(color='red', width=2),
+        name='%D (Slow)'
+    ))
+    
+    # Add overbought/oversold levels
+    fig.add_hline(y=80, line_dash="dash", line_color="red", 
+                  annotation_text="Overbought (80)", annotation_position="top right")
+    fig.add_hline(y=20, line_dash="dash", line_color="green", 
+                  annotation_text="Oversold (20)", annotation_position="bottom right")
+    fig.add_hline(y=50, line_dash="dot", line_color="gray", 
+                  annotation_text="Midline (50)", annotation_position="top left")
+    
+    fig.update_layout(
+        title="Stochastic Oscillator (5-day %K, 3-day %D)",
+        yaxis_title="Stochastic %",
+        xaxis_title="Date",
+        height=300,
+        yaxis=dict(range=[0, 100]),
         showlegend=True
     )
     
@@ -1035,6 +1094,10 @@ def main():
             with col2:
                 macd_chart = create_macd_chart(hist)
                 st.plotly_chart(macd_chart, use_container_width=True)
+            
+            # Stochastic chart (smaller, full width)
+            stochastic_chart = create_stochastic_chart(hist)
+            st.plotly_chart(stochastic_chart, use_container_width=True)
             
             # Ichimoku Cloud chart (full width)
             ichimoku_chart = create_ichimoku_chart(hist, ticker)
