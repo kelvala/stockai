@@ -106,7 +106,7 @@ st.markdown("""
         font-size: 0.9em;
     }
     
-    /* Search input styling */
+    /* Search input styling with improved UX */
     .stTextInput > div > div > input {
         background-color: #f8f9fa;
         border: 2px solid #e9ecef;
@@ -114,13 +114,71 @@ st.markdown("""
         padding: 0.75rem 1rem;
         font-size: 1rem;
         transition: all 0.2s ease;
+        cursor: text;
     }
     .stTextInput > div > div > input:focus {
         border-color: #0066cc;
         box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
         background-color: white;
     }
+    .stTextInput > div > div > input:hover {
+        border-color: #0099ff;
+        background-color: white;
+    }
+    
+    /* Special styling for direct ticker input */
+    input[placeholder*="Type ticker"] {
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 </style>
+
+<script>
+// Add double-click to select all functionality for text inputs
+document.addEventListener('DOMContentLoaded', function() {
+    function setupDoubleClickSelect() {
+        // Find all text input elements
+        const textInputs = document.querySelectorAll('input[type="text"]');
+        
+        textInputs.forEach(function(input) {
+            // Add double-click listener
+            input.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                this.select(); // Select all text
+            });
+            
+            // Also add focus behavior to select all when clicked if empty or placeholder
+            input.addEventListener('focus', function(e) {
+                // Small delay to ensure the input is ready
+                setTimeout(() => {
+                    if (this.value === '' || this.placeholder.includes(this.value)) {
+                        this.select();
+                    }
+                }, 50);
+            });
+        });
+    }
+    
+    // Initial setup
+    setupDoubleClickSelect();
+    
+    // Re-setup when Streamlit re-renders components
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length > 0) {
+                // Small delay to ensure DOM is ready
+                setTimeout(setupDoubleClickSelect, 100);
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
+</script>
 """, unsafe_allow_html=True)
 
 def clean_ticker(ticker_input):
@@ -734,8 +792,8 @@ def main():
         # Stock ticker selection with dual input approach
         st.markdown("**Select or enter a ticker:**")
         
-        # Create two columns for dropdown and direct input
-        col1, col2 = st.columns([2, 1])
+        # Create two columns for dropdown and direct input (wider direct input)
+        col1, col2 = st.columns([3, 2])
         
         with col1:
             # Find the index for the current selected ticker in dropdown options
@@ -753,13 +811,14 @@ def main():
             )
         
         with col2:
-            # Direct ticker input
+            # Direct ticker input - wider and better UX
             direct_ticker_input = st.text_input(
                 "Or type ticker:",
                 value="",
-                placeholder="e.g., AAPL",
-                help="Enter any ticker symbol directly",
-                label_visibility="collapsed"
+                placeholder="Type ticker...",
+                help="Enter any ticker symbol directly - double-click to select all",
+                label_visibility="collapsed",
+                key="direct_ticker_input"
             )
         
         # Extract ticker from dropdown selection
