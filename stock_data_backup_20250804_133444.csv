@@ -24,7 +24,6 @@ AES,AES Corporation
 AFL,AFL Corporation
 AFRM,Affirm Holdings Inc
 AG,First Majestic Silver Corp
-AGG,iShares Core U.S. Aggregate Bond ETF
 AIG,AIG Inc
 AIZ,AIZ Corporation
 AJG,AJG Corporation
@@ -69,7 +68,6 @@ ATVI,ATVI Corp
 AVB,AvalonBay Communities Inc
 AVGO,Broadcom Inc
 AVY,AVY Corporation
-AWAY,ETFMG Travel Tech ETF
 AWK,AWK Corporation
 AXP,AXP Inc
 AZO,AZO Corporation
@@ -77,12 +75,10 @@ B,Barnes Group Inc
 BA,BA Corporation
 BABA,Alibaba Group Holding Ltd
 BAC,Bank of America Corp
-BANNF,Bannerman Energy Ltd
 BATT,Amplify Lithium & Battery Technology ETF
 BAX,BAX Corporation
 BB,BlackBerry Ltd
 BBY,BBY Corporation
-BCI,abrdn Bloomberg All Commodity Strategy K-1 Free ETF
 BDX,BDX Inc
 BE,Bloom Energy Corp
 BEN,BEN Corporation
@@ -93,20 +89,15 @@ BITF,Bitfarms Ltd
 BITI,ProShares Short Bitcoin Strategy ETF
 BITO,ProShares Bitcoin Strategy ETF
 BK,BK Inc
-BKCH,Global X Blockchain ETF
 BKKT,Bakkt Holdings Inc
 BKNG,BKNG Corp
 BKR,BKR Corporation
 BLDP,Ballard Power Systems Inc
 BLK,BLK Inc
 BLL,BLL Corporation
-BLOK,Amplify Transformational Data Sharing ETF
 BMY,BMY Inc
 BND,Vanguard Total Bond Market ETF
 BNTX,BioNTech SE
-BOIL,ProShares Ultra Bloomberg Natural Gas
-BOTZ,Global X Robotics & Artificial Intelligence ETF
-BQSSF,Boss Energy Ltd
 BR,BR Corporation
 BRK-A,BRK-A Corporation
 BRK-B,BRK-B Corporation
@@ -116,12 +107,10 @@ BSX,BSX Inc
 BTBT,Bit Digital Inc
 BTCS,BTCS Inc
 BWA,BWA Corporation
-BWXT,BWX Technologies Inc
 C,C Inc
 CAG,CAG Corporation
 CAH,CAH Corporation
 CAN,Canaan Inc
-CANE,Teucrium Sugar Fund
 CARR,CARR Corporation
 CAT,CAT Inc
 CB,CB Inc
@@ -134,7 +123,6 @@ CDE,Coeur Mining Inc
 CDNS,CDNS Corp
 CDW,CDW Corporation
 CE,CE Corporation
-CEG,Constellation Energy Corp
 CERN,CERN Corporation
 CF,CF Corporation
 CFG,CFG Corporation
@@ -142,7 +130,6 @@ CHD,CHD Corporation
 CHRW,CHRW Corporation
 CHTR,CHTR Corp
 CI,CI Inc
-CIBR,First Trust NASDAQ Cybersecurity ETF
 CIFR,Cipher Mining Inc
 CINF,CINF Corporation
 CL,CL Inc
@@ -162,13 +149,9 @@ COG,COG Corporation
 COIN,Coinbase Global Inc
 COO,COO Corporation
 COP,COP Inc
-COPX,Global X Copper Miners ETF
-CORN,Teucrium Corn Fund
 CORZ,Core Scientific Inc
 COST,Costco Wholesale Corp
-COW,iPath Series B Bloomberg Livestock Subindex Total Return ETN
 CPB,CPB Corporation
-CPER,United States Copper Index Fund
 CPRT,CPRT Corporation
 CRM,Salesforce Inc
 CRWD,CrowdStrike Holdings Inc
@@ -180,20 +163,17 @@ CTSH,CTSH Corporation
 CTVA,CTVA Corporation
 CTXS,CTXS Corporation
 CVS,CVS Inc
-CVV.TO,Cameco Corporation
 CVX,Chevron Corp
 CWEN,Clearway Energy Inc
 CXO,CXO Corporation
 D,D Corporation
 DAL,DAL Inc
-DBA,Invesco DB Agriculture Fund
 DD,DD Corporation
 DDOG,Datadog Inc
 DE,DE Inc
 DFS,DFS Corporation
 DG,DG Inc
 DGHI,Digihost Technology Inc
-DGRO,iShares Core Dividend Growth ETF
 DGX,DGX Corporation
 DHI,DHI Corporation
 DHR,Danaher Corp
@@ -201,7 +181,6 @@ DIS,DIS Inc
 DISCA,DISCA Corporation
 DISCK,DISCK Corporation
 DISH,DISH Corporation
-DJP,iPath Series B Bloomberg Commodity Index Total Return ETN
 DLR,Digital Realty Trust Inc
 DLTR,DLTR Corporation
 DNN,Denison Mines Corp
@@ -211,16 +190,13 @@ DOW,DOW Corporation
 DPZ,DPZ Corporation
 DRE,DRE Corporation
 DRI,DRI Corporation
-DRIP,Direxion Daily S&P Oil & Gas Exp. & Prod. Bear 2X Shares
 DRIV,Global X Autonomous & Electric Vehicles ETF
 DTE,DTE Corporation
 DUK,DUK Inc
 DVA,DVA Corporation
 DVN,Devon Energy Corp
-DVY,iShares Select Dividend ETF
 DXC,DXC Corporation
 DXCM,DXCM Corp
-DYLLF,Deep Yellow Ltd
 E,Eni S.p.A.
 EA,EA Corporation
 EBANG,Ebang International Holdings Inc
@@ -233,7 +209,6 @@ EFA,iShares MSCI EAFE ETF
 EFX,EFX Corporation
 EIX,EIX Corporation
 EL,EL Corporation
-ELVUF,Elevate Uranium Ltd
 EMN,EMN Corporation
 EMR,EMR Inc
 ENPH,ENPH Corporation
@@ -242,77 +217,51 @@ EOG,EOG Resources Inc
 EPD,Enterprise Products Partners LP
 EQIX,EQIX Inc
 EQR,Equity Residential
-ERTH,Invesco MSCI Sustainable Future ETF
 ES,ES Corporation
-ESPO,VanEck Video Gaming and eSports ETF
 ESS,ESS Corporation
 ET,Energy Transfer LP
 ETFC,ETFC Corporation
 ETHE,Grayscale Ethereum Trust
 ETN,ETN Corporation
 ETR,ETR Corporation
-EU.TO,Encavis AG
 EVRG,EVRG Corporation
 EW,EW Corporation
-EWC,iShares MSCI Canada ETF
-EWG,iShares MSCI Germany ETF
 EWJ,iShares MSCI Japan ETF
-EWT,iShares MSCI Taiwan ETF
-EWU,iShares MSCI United Kingdom ETF
-EWY,iShares MSCI South Korea ETF
-EWZ,iShares MSCI Brazil ETF
 EXC,EXC Corporation
 EXK,Endeavour Silver Corp
 EXPD,EXPD Corporation
 EXPE,EXPE Corporation
 EXR,EXR Corporation
 F,F Inc
-FAN,First Trust Global Wind Energy ETF
 FANG,Diamondback Energy Inc
 FAST,FAST Corporation
 FB,FB Corporation
 FBHS,FBHS Corporation
 FCEL,FuelCell Energy Inc
-FCU.TO,Fission Uranium Corp
 FCX,FCX Inc
-FDIS,Fidelity MSCI Consumer Discretionary Index ETF
 FDX,FDX Corporation
 FE,FE Corporation
-FENY,Fidelity MSCI Energy Index ETF
-FEZ,SPDR EURO STOXX 50 ETF
 FFIV,FFIV Corporation
-FHLC,Fidelity MSCI Health Care Index ETF
-FIDU,Fidelity MSCI Industrials Index ETF
 FIND,Fisker Inc
 FIS,FIS Inc
 FISV,FISV Corp
 FITB,FITB Corporation
 FLT,FLT Corporation
-FMAT,Fidelity MSCI Materials Index ETF
 FMC,FMC Corporation
 FMC,FMC Corp
-FNCL,Fidelity MSCI Financials Index ETF
 FOX,FOX Corporation
 FOXA,FOXA Corporation
 FRC,FRC Corporation
-FREL,Fidelity MSCI Real Estate Index ETF
 FRT,FRT Corporation
 FSLR,First Solar Inc
-FSTA,Fidelity MSCI Consumer Staples Index ETF
-FTEC,Fidelity MSCI Information Technology Index ETF
 FTFT,Future FinTech Group Inc
 FTI,FTI Corporation
-FTIHX,Fidelity Total International Index Fund
 FTNT,FTNT Corporation
 FTV,FTV Corporation
-FUTY,Fidelity MSCI Utilities Index ETF
 FXI,iShares China Large-Cap ETF
-FXNAX,Fidelity U.S. Sustainability Index Fund
 G,Genpact Limited
-GAMR,Wedbush ETFMG Video Game Tech ETF
 GBTC,Grayscale Bitcoin Trust
 GD,GD Inc
-GDLC,Grayscale Digital Large Cap Fund
 GDX,VanEck Gold Miners ETF
 GDXJ,VanEck Junior Gold Miners ETF
 GE,GE Inc
@@ -321,12 +270,9 @@ GILD,GILD Corp
 GIS,GIS Corporation
 GL,GL Corporation
 GLD,SPDR Gold Shares
-GLO.TO,Global Atomic Corp
-GLTR,ETFS Physical Precious Metals Basket Shares
 GLW,GLW Corporation
 GM,GM Inc
 GME,GameStop Corp
-GNOM,Global X Genomics & Biotechnology ETF
 GOLD,Barrick Gold Corporation
 GOOG,Alphabet Inc Class C
 GOOGL,Alphabet Inc Class A
@@ -337,23 +283,18 @@ GREE,Greenidge Generation Holdings Inc
 GRID,First Trust NASDAQ Clean Edge Smart Grid Infrastructure Index Fund
 GRMN,GRMN Corporation
 GS,GS Inc
-GSG,iShares S&P GSCI Commodity-Indexed Trust
-GUSH,Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares
 GWW,GWW Corporation
 H,Hyatt Hotels Corporation
 HA,Hawaiian Holdings Inc
-HACK,ETFMG Prime Cyber Security ETF
 HAL,HAL Corporation
 HAS,HAS Corporation
 HBAN,HBAN Corporation
 HBI,HBI Corporation
 HCA,HCA Corporation
 HD,Home Depot Inc
-HDV,iShares Core High Dividend ETF
+HES,Hess Corp
 HEI,HEICO Corp Class A
 HEI.A,HEICO Corp Class A
-HERO,Global X Video Games & Esports ETF
-HES,Hess Corp
 HFC,HFC Corporation
 HIG,HIG Corporation
 HII,HII Corporation
@@ -375,28 +316,14 @@ HWM,HWM Corporation
 HYG,iShares iBoxx $ High Yield Corporate Bond ETF
 I,Intelsat S.A.
 IAG,Iamgold Corporation
-IAI,iShares U.S. Broker-Dealers & Securities Exchanges ETF
-IAU,iShares Gold Trust
-IBB,iShares Biotechnology ETF
 IBM,International Business Machines Corp
 ICE,ICE Inc
-ICLN,iShares Global Clean Energy ETF
-IDRV,iShares Self-Driving EV and Tech ETF
-IDU,iShares U.S. Utilities ETF
 IDXX,IDXX Corporation
-IEF,iShares 7-10 Year Treasury Bond ETF
-IEFA,iShares Core MSCI EAFE IMI Index ETF
-IEMG,iShares Core MSCI Emerging Markets IMI Index ETF
 IEX,IEX Corporation
-IEZ,iShares U.S. Oil Equipment & Services ETF
 IFF,IFF Corporation
-IGV,iShares Expanded Tech-Software Sector ETF
-IJH,iShares Core S&P Mid-Cap ETF
-IJR,iShares Core S&P Small-Cap ETF
 ILIT,iShares Lithium Miners and Producers ETF
 ILMN,ILMN Corporation
 INCY,INCY Corporation
-INDA,iShares MSCI India ETF
 INFO,INFO Corporation
 INTC,Intel Corp
 INTU,INTU Corp
@@ -410,30 +337,13 @@ IRM,IRM Corporation
 ISRG,ISRG Corp
 IT,IT Corporation
 ITW,ITW Inc
-IVE,iShares Core S&P U.S. Value ETF
-IVV,iShares Core S&P 500 ETF
-IVW,iShares Core S&P U.S. Growth ETF
 IVZ,IVZ Corporation
 IWM,iShares Russell 2000 ETF
-IYC,iShares U.S. Consumer Discretionary ETF
-IYE,iShares U.S. Energy ETF
-IYF,iShares U.S. Financials ETF
-IYH,iShares U.S. Healthcare ETF
-IYJ,iShares U.S. Industrials ETF
-IYK,iShares U.S. Consumer Staples ETF
-IYM,iShares U.S. Basic Materials ETF
-IYR,iShares U.S. Real Estate ETF
-IYW,iShares U.S. Technology ETF
 J,Jacobs Engineering Group Inc
 JBHT,JBHT Corporation
 JBLU,JetBlue Airways Corporation
 JCI,JCI Corporation
 JD,JD.com Inc
-JETS,U.S. Global Jets ETF
-JJC,iPath Series B Bloomberg Copper Subindex Total Return ETN
-JJN,iPath Series B Bloomberg Nickel Subindex Total Return ETN
-JJT,iPath Series B Bloomberg Tin Subindex Total Return ETN
-JJU,iPath Series B Bloomberg Aluminum Subindex Total Return ETN
 JKHY,JKHY Corporation
 JNJ,Johnson & Johnson
 JNPR,JNPR Corporation
@@ -442,7 +352,6 @@ JPM,JPMorgan Chase & Co
 JWN,Nordstrom Inc
 K,K Corporation
 KBAT,KraneShares Battery Metals & Technology ETF
-KBE,SPDR S&P Bank ETF
 KEY,KEY Corporation
 KEYS,KEYS Corporation
 KGC,Kinross Gold Corporation
@@ -453,25 +362,17 @@ KMB,KMB Corporation
 KMI,Kinder Morgan Inc
 KMX,KMX Corporation
 KO,Coca-Cola Co
-KOLD,ProShares UltraShort Bloomberg Natural Gas
 KR,KR Corporation
-KRE,SPDR S&P Regional Banking ETF
 KSS,KSS Corporation
 KSU,KSU Corporation
-KWEB,KraneShares CSI China Internet ETF
 L,L Corporation
 LAC,Lithium Americas Corp
 LB,LB Corporation
-LBRDA,Liberty Broadband Corp Class A
-LBRDK,Liberty Broadband Corp Class C
 LCID,Lucid Group Inc
 LDOS,LDOS Corporation
 LEG,LEG Corporation
-LEGR,First Trust Indxx Innovative Transaction & Process ETF
 LEN,LEN Corporation
 LEU,Centrus Energy Corp
-LGF.A,Lions Gate Entertainment Corp Class A
-LGF.B,Lions Gate Entertainment Corp Class B
 LH,LH Corporation
 LHX,LHX Corporation
 LI,Li Auto Inc
@@ -479,6 +380,10 @@ LIACF,Lithium Ionic Corp
 LILIF,Lithium Chile Inc
 LIN,LIN Inc
 LIT,Global X Lithium & Battery Tech ETF
+LBRDA,Liberty Broadband Corp Class A
+LBRDK,Liberty Broadband Corp Class C
+LSXMA,Liberty SiriusXM Group Class A
+LSXMK,Liberty SiriusXM Group Class C
 LKQ,LKQ Corporation
 LLY,Eli Lilly and Co
 LMT,LMT Corporation
@@ -487,8 +392,6 @@ LNT,LNT Corporation
 LOW,LOW Inc
 LQD,iShares iBoxx $ Investment Grade Corporate Bond ETF
 LRCX,LRCX Corp
-LSXMA,Liberty SiriusXM Group Class A
-LSXMK,Liberty SiriusXM Group Class C
 LTBR,Lightbridge Corp
 LTHM,Livent Corp
 LULU,Lululemon Athletica Inc
@@ -506,18 +409,14 @@ MAR,MAR Corporation
 MARA,Marathon Digital Holdings Inc
 MAS,MAS Corporation
 MCD,MCD Corporation
-MCHI,iShares MSCI China ETF
 MCHP,MCHP Corporation
 MCK,MCK Corporation
 MCO,MCO Corporation
 MDLZ,MDLZ Corp
 MDT,MDT Corporation
-MDY,SPDR S&P MidCap 400 ETF Trust
 MET,MET Corporation
 META,Meta Platforms Inc
-MGK,Vanguard Mega Cap Growth ETF
 MGM,MGM Corporation
-MGV,Vanguard Mega Cap Value ETF
 MHK,MHK Corporation
 MKC,MKC Corporation
 MKTX,MKTX Corporation
@@ -527,8 +426,6 @@ MMM,MMM Corporation
 MNST,MNST Corporation
 MO,MO Inc
 MOGO,Mogo Inc
-MOON,Direxion Moonshot Innovators ETF
-MORT,VanEck Mortgage REIT Income ETF
 MOS,MOS Corporation
 MP,MP Materials Corp
 MPC,Marathon Petroleum Corp
@@ -560,9 +457,7 @@ NIO,NIO Inc
 NKE,Nike Inc
 NKLA,Nikola Corporation
 NLOK,NLOK Corporation
-NLR,VanEck Nuclear Energy ETF
 NLSN,NLSN Corporation
-NOBL,ProShares S&P 500 Dividend Aristocrats ETF
 NOC,NOC Corporation
 NOK,Nokia Corp
 NOW,NOW Corporation
@@ -577,11 +472,9 @@ NWL,NWL Corporation
 NWS,NWS Corporation
 NWSA,NWSA Corporation
 NXE,NexGen Energy Ltd
-NXE.TO,NexGen Energy Ltd
 NXPI,NXPI Corp
 O,Realty Income Corp
 ODFL,ODFL Corporation
-OIH,VanEck Oil Services ETF
 OKE,ONEOK Inc
 OKLO,Oklo Inc
 OKTA,Okta Inc
@@ -594,18 +487,14 @@ OXY,OXY Corporation
 P,Pandora Media Inc
 PAAS,Pan American Silver Corp
 PALAF,Paladin Energy Ltd
-PALL,ETFS Physical Palladium Shares
 PARA,Paramount Global
 PATH,UiPath Inc
 PAYX,PAYX Corporation
 PBCT,PBCT Corporation
-PBW,Invesco WilderHill Clean Energy ETF
 PCAR,PCAR Corporation
-PDBC,Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF
 PEAK,PEAK Corporation
 PEG,PEG Corporation
 PELL,Piedmont Lithium Inc
-PENMF,Peninsula Energy Ltd
 PEP,PepsiCo Inc
 PFE,PFE Inc
 PFG,PFG Corporation
@@ -613,11 +502,9 @@ PG,Procter & Gamble Co
 PGR,PGR Corporation
 PH,PH Corporation
 PHM,PHM Corporation
-PICK,iShares MSCI Global Metals & Mining Producers ETF
 PINS,Pinterest Inc
 PKG,PKG Corporation
 PKI,PKI Corporation
-PKN,Invesco Nuclear Energy ETF
 PLD,PLD Inc
 PLTR,Palantir Technologies Inc
 PLUG,Plug Power Inc
@@ -627,19 +514,15 @@ PNR,PNR Corporation
 PNW,PNW Corporation
 PPG,PPG Corporation
 PPL,PPL Corporation
-PPLT,ETFS Physical Platinum Shares
 PRGO,PRGO Corporation
 PRU,PRU Corporation
 PSA,PSA Inc
-PSI,Invesco Dynamic Semiconductors ETF
 PSX,Phillips 66
 PVH,PVH Corporation
 PWR,PWR Corporation
 PXD,Pioneer Natural Resources Co
-PXJ,Invesco Dynamic Energy Exploration & Production ETF
 PYPL,PYPL Corp
 Q,Quintiles IMS Holdings Inc
-QCLN,First Trust NASDAQ Clean Edge Green Energy Index Fund
 QCOM,QCOM Corp
 QQQ,Invesco QQQ Trust
 QRVO,QRVO Corporation
@@ -647,58 +530,44 @@ QS,QuantumScape Corporation
 R,Ryder System Inc
 RBLX,Roblox Corporation
 RCL,RCL Corporation
-RDVY,First Trust Rising Dividend Achievers ETF
 RE,RE Corporation
 REE,Rare Element Resources Ltd
 REG,REG Corporation
 REGN,REGN Corp
-REM,iShares Mortgage Real Estate ETF
 REMX,VanEck Rare Earth/Strategic Metals ETF
 RF,RF Corporation
 RHI,RHI Corporation
-RING,iShares MSCI Global Gold Miners ETF
 RIOT,Riot Platforms Inc
 RIVN,Rivian Automotive Inc
 RJF,RJF Corporation
 RL,RL Corporation
 RMD,RMD Corporation
-ROBO,ROBO Global Robotics and Automation Index ETF
 ROK,ROK Corporation
 ROKU,Roku Inc
 ROL,ROL Corporation
 ROP,ROP Corporation
 ROST,ROST Corporation
 RSG,RSG Corporation
-RSX,VanEck Russia ETF
 RTX,RTX Inc
 RUN,Sunrun Inc
 S,Sprint Corporation
 SAVE,Spirit Airlines Inc
 SBAC,SBAC Corporation
 SBUX,SBUX Corp
-SCHA,Schwab U.S. Small-Cap ETF
-SCHD,Schwab US Dividend Equity ETF
-SCHM,Schwab U.S. Mid-Cap ETF
 SCHW,SCHW Inc
-SCO,ProShares UltraShort Bloomberg Crude Oil
 SEDG,SolarEdge Technologies Inc
 SEDG,SolarEdge Technologies Inc
 SEE,SEE Corporation
 SGML,Sigma Lithium Corporation
 SHOP,Shopify Inc
 SHW,SHW Inc
-SHY,iShares 1-3 Year Treasury Bond ETF
 SI,Silvergate Capital Corp
-SIL,Global X Silver Miners ETF
 SIVB,SIVB Corporation
-SIVR,ETFS Physical Silver Shares
 SJM,SJM Corporation
 SKYW,SkyWest Inc
 SLB,SLB Inc
 SLG,SLG Corporation
 SLV,iShares Silver Trust
-SMH,VanEck Semiconductor ETF
-SMR,NuScale Power Corp
 SNA,SNA Corporation
 SNAP,Snap Inc
 SNOW,SNOW Inc
@@ -706,11 +575,6 @@ SNPS,SNPS Corp
 SO,SO Inc
 SOFI,SoFi Technologies Inc
 SOS,SOS Limited
-SOXL,Direxion Daily Semiconductor Bull 3X Shares
-SOXS,Direxion Daily Semiconductor Bear 3X Shares
-SOXX,iShares Semiconductor ETF
-SOYB,Teucrium Soybean Fund
-SPACE,Procure Space ETF
 SPCE,Virgin Galactic Holdings Inc
 SPG,SPG Inc
 SPGI,SPGI Inc
@@ -718,27 +582,21 @@ SPLK,Splunk Inc
 SPOT,Spotify Technology SA
 SPWR,SunPower Corporation
 SPWR,SunPower Corp
-SPXL,Direxion Daily S&P 500 Bull 3X Shares
-SPXS,Direxion Daily S&P 500 Bear 3X Shares
 SPY,SPDR S&P 500 ETF Trust
 SQ,SQ Inc
 SQM,Sociedad Quimica y Minera de Chile SA
-SQQQ,ProShares UltraPro Short QQQ
 SRE,SRE Corporation
 SRUUF,Sprott Physical Uranium Trust
 STE,STE Corporation
 STT,STT Corporation
 STX,STX Corporation
 STZ,STZ Corporation
-SUNW,Sunworks Inc
-SVXY,ProShares Short VIX Short-Term Futures ETF
 SWK,SWK Corporation
 SWKS,SWKS Corporation
 SYF,SYF Corporation
 SYK,SYK Inc
 SYY,SYY Corporation
 T,AT&T Inc
-TAN,Invesco Solar ETF
 TAP,TAP Corporation
 TDG,TDG Corporation
 TDY,TDY Corporation
@@ -754,10 +612,8 @@ TJX,TJX Inc
 TLT,iShares 20+ Year Treasury Bond ETF
 TMO,Thermo Fisher Scientific Inc
 TMUS,T-Mobile US Inc
-TNA,Direxion Daily Small Cap Bull 3X Shares
 TPG,TPG Corporation
 TPR,TPR Corporation
-TQQQ,ProShares UltraPro QQQ
 TRIP,TRIP Corporation
 TROW,TROW Corporation
 TRV,TRV Corporation
@@ -772,27 +628,22 @@ TWTR,TWTR Corporation
 TXN,Texas Instruments Inc
 TXT,TXT Corporation
 TYL,TYL Corporation
-TZA,Direxion Daily Small Cap Bear 3X Shares
 U,Unity Software Inc
 UA,UA Corporation
 UAA,UAA Corporation
 UAL,UAL Corporation
 UBER,UBER Inc
-UCO,ProShares Ultra Bloomberg Crude Oil
 UDR,UDR Corporation
 UEC,Uranium Energy Corp
-UFO,Procure Space ETF
 UHS,UHS Corporation
 ULTA,ULTA Corporation
 UNG,"United States Natural Gas Fund, LP"
 UNH,UnitedHealth Group Inc
 UNM,UNM Corporation
 UNP,UNP Inc
-UPC.TO,Uranium Participation Corp
 UPS,UPS Corporation
 UPST,Upstart Holdings Inc
 URA,Global X Uranium ETF
-URC.TO,Uranium Royalty Corp
 URG,Ur-Energy Inc
 URI,URI Corporation
 URNJ,Sprott Junior Uranium Miners ETF
@@ -802,43 +653,22 @@ USB,USB Inc
 USO,"United States Oil Fund, LP"
 UTX,UTX Corporation
 UUUU,Energy Fuels Inc
-UVXY,ProShares Ultra VIX Short-Term Futures ETF
 V,Visa Inc
 VAL,Valaris Limited
 VAR,VAR Corporation
-VAW,Vanguard Materials ETF
-VB,Vanguard Small-Cap ETF
-VCR,Vanguard Consumer Discretionary ETF
-VDC,Vanguard Consumer Staples ETF
-VDE,Vanguard Energy ETF
 VEA,Vanguard FTSE Developed Markets ETF
 VFC,VFC Corporation
-VFH,Vanguard Financials ETF
-VGT,Vanguard Information Technology ETF
-VHT,Vanguard Health Care ETF
 VIAC,VIAC Corporation
-VIG,Vanguard Dividend Appreciation ETF
-VIS,Vanguard Industrials ETF
-VIX,CBOE Volatility Index
 VLO,Valero Energy Corp
 VMC,VMC Corporation
 VNO,VNO Corporation
-VNQ,Vanguard Real Estate ETF
-VO,Vanguard Mid-Cap ETF
 VOO,Vanguard S&P 500 ETF
-VPU,Vanguard Utilities ETF
 VRSK,VRSK Corporation
 VRSN,VRSN Corporation
 VRTX,VRTX Corp
-VST,Vistra Corp
 VTI,Vanguard Total Stock Market ETF
 VTR,VTR Corporation
-VTV,Vanguard Value ETF
-VTWO,Vanguard Russell 2000 ETF
-VUG,Vanguard Growth ETF
 VWO,Vanguard FTSE Emerging Markets ETF
-VXX,iPath Series B S&P 500 VIX Short-Term Futures ETN
-VYM,Vanguard High Dividend Yield ETF
 VZ,Verizon Communications Inc
 W,W Corporation
 WAB,WAB Corporation
@@ -847,7 +677,6 @@ WBA,WBA Corporation
 WBD,Warner Bros Discovery Inc
 WDAY,WDAY Corp
 WDC,WDC Corporation
-WEAT,Teucrium Wheat Fund
 WEC,WEC Corporation
 WELL,WELL Inc
 WFC,Wells Fargo & Co
@@ -866,21 +695,12 @@ WULF,TeraWulf Inc
 WY,WY Corporation
 WYNN,WYNN Corporation
 X,United States Steel Corporation
-XBI,SPDR S&P Biotech ETF
 XEL,XEL Corporation
-XLB,Materials Select Sector SPDR Fund
 XLE,The Energy Select Sector SPDR Fund
 XLF,The Financial Select Sector SPDR Fund
-XLI,Industrial Select Sector SPDR Fund
 XLK,The Technology Select Sector SPDR Fund
 XLNX,XLNX Corporation
-XLP,Consumer Staples Select Sector SPDR Fund
-XLRE,Real Estate Select Sector SPDR Fund
-XLU,Utilities Select Sector SPDR Fund
-XLV,Health Care Select Sector SPDR Fund
-XLY,Consumer Discretionary Select Sector SPDR Fund
 XOM,Exxon Mobil Corp
-XOP,SPDR S&P Oil & Gas Exploration & Production ETF
 XPEV,XPeng Inc
 XRAY,XRAY Corporation
 XRX,XRX Corporation
@@ -893,3 +713,5 @@ ZION,ZION Corporation
 ZM,ZM Corporation
 ZS,Zscaler Inc
 ZTS,ZTS Inc
+LGF.A,Lions Gate Entertainment Corp Class A
+LGF.B,Lions Gate Entertainment Corp Class B
