@@ -1165,7 +1165,7 @@ def main():
         # Show default content when no valid ticker is selected
         st.markdown('<div class="main-header">📊 Stock Analyzer</div>', unsafe_allow_html=True)
         st.markdown("""
-        ### Welcome to Stock Analyzer v0.17!
+        ### Welcome to Stock Analyzer v0.18!
         
         **🔍 Easy Stock Search:**
         - **Dropdown Selection:** Choose from popular stocks in the sidebar
@@ -1188,7 +1188,7 @@ def main():
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #666; padding: 2rem;">
-        <p><strong>Stock Analyzer v0.17</strong> - AI-Powered Stock Research Tool</p>
+        <p><strong>Stock Analyzer v0.18</strong> - AI-Powered Stock Research Tool</p>
         <p>⚠️ <strong>Disclaimer:</strong> This analysis is for educational purposes only. 
         Always consult with financial advisors and conduct your own research before making investment decisions.</p>
         <p>Data provided by Yahoo Finance • Built with Streamlit</p>
