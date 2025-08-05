@@ -236,6 +236,7 @@ class StockAnalyzerGUI:
         self.suggestion_listbox = None
         self.current_suggestions = []  # Store current suggestions for selection
         self.typing_new_ticker = False  # Flag to track if user is entering new ticker
+        self.current_ticker = None  # Store current ticker for chart generation
         
         self.setup_gui()
         self.setup_ai_model()
@@ -260,6 +261,7 @@ class StockAnalyzerGUI:
         input_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 15))
         input_frame.columnconfigure(0, weight=1)
         input_frame.columnconfigure(1, weight=0)
+        input_frame.columnconfigure(2, weight=0)
         
         self.question_input = tk.Text(input_frame, height=1, 
                                      font=("Arial", 16), wrap=tk.WORD,
@@ -278,7 +280,14 @@ class StockAnalyzerGUI:
         self.run_button = ttk.Button(input_frame, text="📊 ANALYZE STOCK", 
                                     command=self.run_gpt, 
                                     style="Accent.TButton")
-        self.run_button.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        self.run_button.grid(row=0, column=1, sticky=(tk.N, tk.S), padx=(5, 0))
+        
+        # Show Charts Button - positioned to the right of analyze button
+        self.charts_button = ttk.Button(input_frame, text="📈 SHOW CHARTS", 
+                                       command=self.show_charts_on_demand, 
+                                       style="Charts.TButton")
+        self.charts_button.grid(row=0, column=2, sticky=(tk.N, tk.S), padx=(5, 0))
+        self.charts_button.config(state="disabled")  # Initially disabled until analysis is done
         
         # Create main content area for stock analysis results
         content_frame = ttk.Frame(main_frame)
@@ -436,6 +445,7 @@ class StockAnalyzerGUI:
         style.configure("Accent.TButton", font=("Arial", 14, "bold"))
         style.configure("AI.TButton", font=("Arial", 12, "bold"), foreground="#10a37f")
         style.configure("Theme.TButton", font=("Arial", 12, "bold"), foreground="#666666")
+        style.configure("Charts.TButton", font=("Arial", 12, "bold"), foreground="#e74c3c")  # Bright red color for charts
         
         # Configure font size button styles with better visibility
         style.configure("SmallFont.TButton", font=("Arial", 12), foreground="#2c3e50", background="#ecf0f1")
@@ -1649,6 +1659,9 @@ class StockAnalyzerGUI:
         # Final cleanup
         ticker = ticker.upper().strip()
         
+        # Store the current ticker for chart generation
+        self.current_ticker = ticker
+        
         # Get company name and show header immediately
         company_name = self.get_company_name_from_ticker(ticker)
         self.root.after(0, self.display_analysis_header, ticker, company_name)
@@ -1881,8 +1894,14 @@ class StockAnalyzerGUI:
             formatted += f"Past performance does not guarantee future results.\n\n"
             formatted += f"{'='*60}\n"
             formatted += f"🏁 END OF ANALYSIS - Stock Analyzer v0.18 🏁\n"
-            formatted += f"{'='*60}\n"
-            formatted += f"\n\n\n------- SCROLL DOWN TO SEE COMPLETE ANALYSIS -------\n\n"
+            formatted += f"{'='*60}\n\n"
+            formatted += f"📊 **TECHNICAL CHARTS AVAILABLE** \n"
+            formatted += f"Click the '📈 SHOW CHARTS' button to view interactive charts with:\n"
+            formatted += f"• Price Chart with Moving Averages & Bollinger Bands\n"
+            formatted += f"• RSI & Stochastic Oscillator\n"
+            formatted += f"• MACD Analysis\n"
+            formatted += f"• Volume Analysis\n\n"
+            formatted += f"🎯 Charts are ready to view whenever you want!\n"
             
             return formatted
             
@@ -2136,9 +2155,13 @@ class StockAnalyzerGUI:
         if error:
             self.display_message(error, "error")
             self.update_status("❌ Error occurred")
+            self.charts_button.config(state="disabled")
         else:
             self.display_complete_analysis(response, "response")
             self.update_status("✅ Analysis complete")
+            # Enable charts button if we have a current ticker
+            if self.current_ticker:
+                self.charts_button.config(state="normal")
         
         # Re-enable button
         self.run_button.config(state="normal", text="📊 ANALYZE STOCK")
@@ -2210,9 +2233,203 @@ class StockAnalyzerGUI:
         self.results_display.tag_configure("info", 
                                           font=("Arial", current_size),
                                           foreground="#3498db")
-
-# Main execution
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = StockAnalyzerGUI(root)
-    root.mainloop()
+    
+    def show_charts_on_demand(self):
+        """Show charts for the current ticker when user clicks the button"""
+        if not self.current_ticker:
+            messagebox.showwarning("No Ticker", "Please run an analysis first to generate charts!")
+            return
+        
+        self.update_status(f"📈 Opening charts for {self.current_ticker}...")
+        self.generate_stock_charts(self.current_ticker)
+    
+    def generate_stock_charts(self, ticker):
+        """Generate and display stock charts after analysis"""
+        try:
+            self.update_status(f"📈 Generating charts for {ticker}...")
+            
+            # Import required libraries
+            import matplotlib.pyplot as plt
+            import matplotlib.dates as mdates
+            from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+            
+            # Get stock data
+            import yfinance as yf
+            stock = yf.Ticker(ticker)
+            hist = stock.history(period="6mo")  # 6 months for cleaner charts
+            
+            if hist.empty:
+                self.update_status(f"❌ No chart data available for {ticker}")
+                return
+            
+            # Create new window for charts
+            chart_window = tk.Toplevel(self.root)
+            chart_window.title(f"📊 {ticker} - Technical Analysis Charts")
+            chart_window.geometry("1200x800")
+            chart_window.configure(bg='white')
+            
+            # Create notebook for tabbed charts
+            notebook = ttk.Notebook(chart_window)
+            notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+            
+            # Calculate technical indicators for charts
+            hist['SMA_9'] = hist['Close'].rolling(window=9).mean()
+            hist['SMA_50'] = hist['Close'].rolling(window=50).mean()
+            hist['SMA_200'] = hist['Close'].rolling(window=200).mean()
+            
+            # RSI
+            delta = hist['Close'].diff()
+            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+            rs = gain / loss
+            hist['RSI'] = 100 - (100 / (1 + rs))
+            
+            # MACD
+            exp1 = hist['Close'].ewm(span=12).mean()
+            exp2 = hist['Close'].ewm(span=26).mean()
+            hist['MACD'] = exp1 - exp2
+            hist['MACD_Signal'] = hist['MACD'].ewm(span=9).mean()
+            
+            # Stochastic (5-day)
+            lowest_low_5 = hist['Low'].rolling(window=5).min()
+            highest_high_5 = hist['High'].rolling(window=5).max()
+            hist['Stoch_K'] = 100 * ((hist['Close'] - lowest_low_5) / (highest_high_5 - lowest_low_5))
+            hist['Stoch_D'] = hist['Stoch_K'].rolling(window=3).mean()
+            
+            # Bollinger Bands
+            hist['BB_Middle'] = hist['Close'].rolling(window=20).mean()
+            bb_std = hist['Close'].rolling(window=20).std()
+            hist['BB_Upper'] = hist['BB_Middle'] + (bb_std * 2)
+            hist['BB_Lower'] = hist['BB_Middle'] - (bb_std * 2)
+            
+            # Tab 1: Price Chart with Moving Averages
+            price_frame = ttk.Frame(notebook)
+            notebook.add(price_frame, text="📈 Price & MAs")
+            
+            fig1, ax1 = plt.subplots(figsize=(12, 6))
+            ax1.plot(hist.index, hist['Close'], label='Close Price', color='black', linewidth=2)
+            ax1.plot(hist.index, hist['SMA_9'], label='9-day MA', color='blue', alpha=0.7)
+            ax1.plot(hist.index, hist['SMA_50'], label='50-day MA', color='orange', alpha=0.7)
+            ax1.plot(hist.index, hist['SMA_200'], label='200-day MA', color='red', alpha=0.7)
+            ax1.plot(hist.index, hist['BB_Upper'], label='BB Upper', color='gray', linestyle='--', alpha=0.5)
+            ax1.plot(hist.index, hist['BB_Lower'], label='BB Lower', color='gray', linestyle='--', alpha=0.5)
+            ax1.fill_between(hist.index, hist['BB_Upper'], hist['BB_Lower'], alpha=0.1, color='gray')
+            
+            ax1.set_title(f'{ticker} - Price Chart with Technical Indicators', fontsize=14, fontweight='bold')
+            ax1.set_ylabel('Price ($)')
+            ax1.legend()
+            ax1.grid(True, alpha=0.3)
+            ax1.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+            plt.setp(ax1.xaxis.get_majorticklabels(), rotation=45)
+            
+            canvas1 = FigureCanvasTkAgg(fig1, price_frame)
+            canvas1.draw()
+            canvas1.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+            
+            # Tab 2: RSI and Stochastic
+            momentum_frame = ttk.Frame(notebook)
+            notebook.add(momentum_frame, text="⚡ RSI & Stochastic")
+            
+            fig2, (ax2a, ax2b) = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+            
+            # RSI
+            ax2a.plot(hist.index, hist['RSI'], label='RSI', color='purple', linewidth=2)
+            ax2a.axhline(y=70, color='red', linestyle='--', alpha=0.7, label='Overbought (70)')
+            ax2a.axhline(y=30, color='green', linestyle='--', alpha=0.7, label='Oversold (30)')
+            ax2a.set_title('RSI (Relative Strength Index)', fontweight='bold')
+            ax2a.set_ylabel('RSI')
+            ax2a.set_ylim(0, 100)
+            ax2a.legend()
+            ax2a.grid(True, alpha=0.3)
+            
+            # Stochastic
+            ax2b.plot(hist.index, hist['Stoch_K'], label='%K (Fast)', color='blue', linewidth=2)
+            ax2b.plot(hist.index, hist['Stoch_D'], label='%D (Slow)', color='red', linewidth=2)
+            ax2b.axhline(y=80, color='red', linestyle='--', alpha=0.7, label='Overbought (80)')
+            ax2b.axhline(y=20, color='green', linestyle='--', alpha=0.7, label='Oversold (20)')
+            ax2b.set_title('Stochastic Oscillator (5-day)', fontweight='bold')
+            ax2b.set_ylabel('Stochastic %')
+            ax2b.set_ylim(0, 100)
+            ax2b.legend()
+            ax2b.grid(True, alpha=0.3)
+            ax2b.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+            plt.setp(ax2b.xaxis.get_majorticklabels(), rotation=45)
+            
+            canvas2 = FigureCanvasTkAgg(fig2, momentum_frame)
+            canvas2.draw()
+            canvas2.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+            
+            # Tab 3: MACD
+            macd_frame = ttk.Frame(notebook)
+            notebook.add(macd_frame, text="📊 MACD")
+            
+            fig3, (ax3a, ax3b) = plt.subplots(2, 1, figsize=(12, 8), sharex=True, gridspec_kw={'height_ratios': [3, 1]})
+            
+            # Price
+            ax3a.plot(hist.index, hist['Close'], label='Close Price', color='black', linewidth=2)
+            ax3a.set_title(f'{ticker} - Price and MACD', fontweight='bold')
+            ax3a.set_ylabel('Price ($)')
+            ax3a.legend()
+            ax3a.grid(True, alpha=0.3)
+            
+            # MACD
+            ax3b.plot(hist.index, hist['MACD'], label='MACD', color='blue', linewidth=2)
+            ax3b.plot(hist.index, hist['MACD_Signal'], label='Signal', color='red', linewidth=2)
+            histogram = hist['MACD'] - hist['MACD_Signal']
+            colors = ['green' if x >= 0 else 'red' for x in histogram]
+            ax3b.bar(hist.index, histogram, color=colors, alpha=0.6, label='Histogram')
+            ax3b.set_ylabel('MACD')
+            ax3b.legend()
+            ax3b.grid(True, alpha=0.3)
+            ax3b.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+            plt.setp(ax3b.xaxis.get_majorticklabels(), rotation=45)
+            
+            canvas3 = FigureCanvasTkAgg(fig3, macd_frame)
+            canvas3.draw()
+            canvas3.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+            
+            # Tab 4: Volume
+            volume_frame = ttk.Frame(notebook)
+            notebook.add(volume_frame, text="📈 Volume")
+            
+            fig4, (ax4a, ax4b) = plt.subplots(2, 1, figsize=(12, 8), sharex=True, gridspec_kw={'height_ratios': [2, 1]})
+            
+            # Price
+            ax4a.plot(hist.index, hist['Close'], label='Close Price', color='black', linewidth=2)
+            ax4a.set_title(f'{ticker} - Price and Volume', fontweight='bold')
+            ax4a.set_ylabel('Price ($)')
+            ax4a.legend()
+            ax4a.grid(True, alpha=0.3)
+            
+            # Volume
+            volume_colors = ['green' if hist['Close'].iloc[i] >= hist['Open'].iloc[i] else 'red' 
+                           for i in range(len(hist))]
+            ax4b.bar(hist.index, hist['Volume'], color=volume_colors, alpha=0.7)
+            ax4b.set_ylabel('Volume')
+            ax4b.set_title('Volume', fontweight='bold')
+            ax4b.grid(True, alpha=0.3)
+            ax4b.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+            plt.setp(ax4b.xaxis.get_majorticklabels(), rotation=45)
+            
+            canvas4 = FigureCanvasTkAgg(fig4, volume_frame)
+            canvas4.draw()
+            canvas4.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+            
+            # Adjust layout for all figures
+            for fig in [fig1, fig2, fig3, fig4]:
+                fig.tight_layout()
+            
+            self.update_status(f"✅ Charts generated for {ticker}")
+            
+            # Add a close button
+            close_btn = tk.Button(chart_window, text="🗙 Close Charts", 
+                                command=chart_window.destroy, 
+                                bg="#e74c3c", fg="white", font=("Arial", 10, "bold"))
+            close_btn.pack(pady=5)
+            
+        except ImportError:
+            self.update_status("❌ Matplotlib not installed - charts unavailable")
+            self.display_message("📊 Charts require matplotlib library.\nInstall with: pip install matplotlib", "error", preserve_content=True)
+        except Exception as e:
+            self.update_status(f"❌ Chart error: {str(e)}")
+            self.display_message(f"📊 Chart generation failed: {str(e)}", "error", preserve_content=True)
